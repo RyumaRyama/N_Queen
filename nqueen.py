@@ -1,6 +1,5 @@
 '''
 argv[1] : Board size
-argv[2] : Number of gene
 '''
 
 import random
@@ -125,7 +124,6 @@ def cross (ini_gene, size):
 
 #突然変異
 def mutation(gene_list, size):
-    #if random.randint(0, 4) == 0:
     gene = random.randint(0,len(gene_list)-1)
     num1 = random.randint(0, size-1)
     num2 = random.randint(0, size-1)
@@ -133,8 +131,6 @@ def mutation(gene_list, size):
     tmp = gene_list[gene][num1]
     gene_list[gene][num1] = gene_list[gene][num2]
     gene_list[gene][num2] = tmp
-
-        #random.shuffle(gene_list[gene])
 
 
 #適応度を基準にソートし，淘汰と増殖を行う
@@ -191,9 +187,6 @@ def main(argv):
         #遺伝子が評価され，淘汰され，増殖する
         gene_list = gene_sort(gene_list, size, n)
 
-        #遺伝子リストをシャッフル
-        #random.shuffle(gene_list)
-        
         #交叉する
         cross_gene = []
         for gene in gene_list:
