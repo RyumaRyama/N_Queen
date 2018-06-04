@@ -5,7 +5,11 @@ argv[1] : Board size
 // java モジュール
 import java.util.Collections;
 
+<<<<<<< HEAD
 #Boardを出力
+=======
+//Boardを出力
+>>>>>>> master
 private static void board_print(int gene, int size){
     for (int i = 0; i < gene; i++){
         for (int j = 0; j < size; j++):
@@ -18,7 +22,11 @@ private static void board_print(int gene, int size){
 }
 
 
+<<<<<<< HEAD
 #遺伝子生成
+=======
+//遺伝子生成
+>>>>>>> master
 private static int makeIniGene(int gene_num, int size){
     Ini_gene<String> ini_gene [] = new ArrayList<String>();
     for cnt in range(0, gene_num){
@@ -32,7 +40,11 @@ private static int makeIniGene(int gene_num, int size){
     return ini_gene;
 }
 
+<<<<<<< HEAD
 #評価関数
+=======
+//評価関数
+>>>>>>> master
 private static int calcFitness(int gene, int size){
     int fitness = 0;
 	Board<String> board [] = new ArrayList<String>();
@@ -80,6 +92,7 @@ def getCell(board, pos, ofst, size):
     return val
 
 
+<<<<<<< HEAD
 #順列表現と順序表現へ変換
 def p_to_o(gene, size):
     converted = []
@@ -89,6 +102,17 @@ def p_to_o(gene, size):
         num_list.append(num)
     
     #遺伝子変換
+=======
+//順列表現と順序表現へ変換
+def p_to_o(gene, size):
+    converted = []
+    num_list = []
+    //数値が1からサイズ分まで順番に入っているリストを作成
+    for num in range(size):
+        num_list.append(num)
+    
+    //遺伝子変換
+>>>>>>> master
     for num in gene:
         converted.append(num_list.index(num))
         num_list.remove(num)
@@ -96,7 +120,11 @@ def p_to_o(gene, size):
     return converted
 
 
+<<<<<<< HEAD
 #順序表現から順列表現へ変換
+=======
+//順序表現から順列表現へ変換
+>>>>>>> master
 def o_to_p(gene, size):
     converted = []
     num_list = []
@@ -110,8 +138,13 @@ def o_to_p(gene, size):
     return converted
 
 
+<<<<<<< HEAD
 #交叉
 #遺伝子のリストを渡すと交叉する
+=======
+//交叉
+//遺伝子のリストを渡すと交叉する
+>>>>>>> master
 def cross (ini_gene, size):
     for i in range(int(len(ini_gene)/2)):
         n = i * 2
@@ -126,14 +159,22 @@ def cross (ini_gene, size):
         ini_gene[n] = tmp
 
 
+<<<<<<< HEAD
 #突然変異
+=======
+//突然変異
+>>>>>>> master
 def mutation(gene_list, size):
     if random.randint(0, 4) == 0:
         gene = random.randint(0,len(gene_list)-1)
         random.shuffle(gene_list[gene])
 
 
+<<<<<<< HEAD
 #適応度を基準にソートし，淘汰と増殖を行う
+=======
+//適応度を基準にソートし，淘汰と増殖を行う
+>>>>>>> master
 def gene_sort(gene_list, size, count):
     fit_gene = []
     for gene in gene_list:
@@ -144,7 +185,11 @@ def gene_sort(gene_list, size, count):
 
     fit_gene.sort(key=itemgetter(1))
 
+<<<<<<< HEAD
     #適応度が0ならプログラム終了
+=======
+    //適応度が0ならプログラム終了
+>>>>>>> master
     if fit_gene[0][1] == 0:
         print("count {}".format(count))
         board_print(fit_gene[0][0], size)
@@ -154,12 +199,17 @@ def gene_sort(gene_list, size, count):
     for gene in fit_gene:
         gene_list.append(gene.pop(0))
 
+<<<<<<< HEAD
     #淘汰は一旦1つだけ行う
+=======
+    //淘汰は一旦1つだけ行う
+>>>>>>> master
     gene_list[-1] = gene_list[0]
 
     return gene_list
 
 
+<<<<<<< HEAD
 #NQueen本体
 def main(argv):
     #NxNのBoard，N個のQueen，のN
@@ -178,6 +228,26 @@ def main(argv):
         gene_list = gene_sort(gene_list, size, n)
         
         #交叉する
+=======
+//NQueen本体
+def main(argv):
+    //NxNのBoard，N個のQueen，のN
+    size = int(argv[1])
+
+    //１世代あたりの遺伝子の数
+    gene_num = 4
+
+    //初期集団の生成
+    gene_list = makeIniGene(gene_num, size)
+
+    //ループに入る
+    n = 1
+    while True:
+        //遺伝子が評価され，淘汰され，増殖する
+        gene_list = gene_sort(gene_list, size, n)
+        
+        //交叉する
+>>>>>>> master
         cross_gene = []
         for gene in gene_list:
             cross_gene.append(p_to_o(gene, size))
@@ -188,7 +258,11 @@ def main(argv):
         for gene in cross_gene:
             gene_list.append(o_to_p(gene, size))
 
+<<<<<<< HEAD
         #突然変異する
+=======
+        //突然変異する
+>>>>>>> master
         mutation(gene_list, size)
 
         n += 1
