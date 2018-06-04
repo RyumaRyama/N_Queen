@@ -162,7 +162,8 @@ def gene_sort(gene_list, size, count):
 
 //NQueen本体
 public class main {
-    #NxNのBoard，N個のQueen，のN
+def main(argv):
+    //NxNのBoard，N個のQueen，のN
     size = int(argv[1])
 
     //１世代あたりの遺伝子の数
