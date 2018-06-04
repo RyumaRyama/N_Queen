@@ -1,6 +1,5 @@
 '''
 argv[1] : Board size
-argv[2] : Number of gene
 '''
 
 import random
