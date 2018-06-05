@@ -1,5 +1,8 @@
 #include <stdio.h>
-
+struct gene_struct{
+    int[] *gene;
+    int fitness;
+}
 
 int main(int argc, char const* argv[])
 {
