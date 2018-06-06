@@ -53,17 +53,6 @@ def calcFitness(gene, size):
     return fitness
 
 
-def getCell(board, pos, ofst, size):
-    posx = pos[0] + ofst[0]
-    posy = pos[1] + ofst[1]
-    if posx >= 0 and posy >= 0 and posx < size and posy < size:
-        val = board[posx][posy]
-    else:
-        val = -1
-
-    return val
-
-
 #順列表現と順序表現へ変換
 def p_to_o(gene, size):
     converted = []
