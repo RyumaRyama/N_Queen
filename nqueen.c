@@ -10,11 +10,6 @@ void cross(int size);
 void mutation(int size);
 void gene_sort(int size,int count);
 
-/* 構造体宣言 */
-struct gene_struct{
-    int *gene;
-    int fitness;
-};
 
 /* NQueen本体 */
 int main(int argc, char const* argv[])
@@ -23,6 +18,12 @@ int main(int argc, char const* argv[])
         puts("Use '[FILE NAME] [QUEEN NUM]'.");
         return 1;
     }
+
+    /* 構造体宣言 */
+    struct gene_struct{
+        int *gene;
+        int fitness;
+    };
     
     int size, gene_num, n;
     
