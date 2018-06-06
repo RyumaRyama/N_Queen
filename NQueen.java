@@ -132,14 +132,17 @@ public class NQueen {
         if random.randint(0, 4) == 0:
             gene = random.randint(0,len(gene_list)-1)
             random.shuffle(gene_list[gene])
+    
 
+    //適応度を基準にソートし，淘汰と増殖を行う(Java)
     private static void geneSort(int geneList[], int size, int count) {
-
-        List<int> fitGene = new ArrayList<int>();
+        
+        int [][] fitGene = new int [geneList.length][geneList[0].length+1]; 
         for (int i = 0; i < geneList.length; i++){
-            int [][] addGene = new int[geneList.length][size+1]
-            
+                int [] addGene = geneList[i];
+                fitGene[i] = addGene;
         }
+        Arrays.sort(fitGene, (a, b) -> Integer.compare(a[geneList[0].length], b[geneList[0].length]));
     }
 
 
@@ -171,8 +174,7 @@ public class NQueen {
 
 
     //NQueen本体
-    public static void main {
-    def main(argv):
+    public static void main(String args[]) {
         //NxNのBoard，N個のQueen，のN
         size = int(argv[1])
 
@@ -184,7 +186,7 @@ public class NQueen {
 
         //ループに入る
         n = 1
-        while True:
+        while (true){
             //遺伝子が評価され，淘汰され，増殖する
             gene_list = gene_sort(gene_list, size, n)
 
@@ -203,6 +205,7 @@ public class NQueen {
             mutation(gene_list, size)
 
             n += 1
+        }
     }
 
 }
