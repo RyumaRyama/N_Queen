@@ -12,24 +12,42 @@ void gene_sort(int size,int count);
 
 /* 構造体宣言 */
 struct gene_struct{
-    int[] *gene;
+    int *gene;
     int fitness;
 };
 
 /* NQueen本体 */
 int main(int argc, char const* argv[])
 {
-    puts("hello, world!");
+    if(argc <= 1){
+        puts("Use '[FILE NAME] [QUEEN NUM]'.");
+        return 1;
+    }
+    
+    int size, gene_num, n;
+    
+    // Nの数
+    size = strtol(argv[1], NULL, 10);
+    
+    //1世代あたりの遺伝子数
+    gene_num = 10;
+    
+    //初期集団の生成
+    struct gene_struct gene_list[gene_num];
+    makeIniGene(gene_list, size);
+    
+/*
+    //学習ループ
+    n = 1;
+    while(1){
+        
+    }
+*/
     return 0;
 }
 
 /* Boardを出力 */
 void board_print(int size) {
-    if (condition) {
-        
-    }else{
-         
-    }
 }
 
 /* 遺伝子生成 */
@@ -66,10 +84,5 @@ void mutation(int size) {
 /* 適応度を基準にソートし，淘汰と増殖を行う */
 void gene_sort(int size,int count) {
     
-    /* 適応度が0ならプログラム終了 */
-       
-    /* 淘汰は一旦1つだけ行う */
-         
 }
-
 
