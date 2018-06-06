@@ -1,9 +1,16 @@
 #include <stdio.h>
+#include <stdlib.h>
+
+/* 構造体宣言 */
+struct gene_struct{
+    int *gene;
+    int fitness;
+};
 
 /* 関数プロトタイプ宣言 */
 void board_print(int size);
 void calcFitness(int size);
-void makeIniGene(int gene_num, int size);
+void makeIniGene(struct gene_struct *genes, int gene_num, int size);
 void p_to_o(int size); 
 void o_to_p(int size);
 void cross(int size);
@@ -19,12 +26,6 @@ int main(int argc, char const* argv[])
         return 1;
     }
 
-    /* 構造体宣言 */
-    struct gene_struct{
-        int *gene;
-        int fitness;
-    };
-    
     int size, gene_num, n;
     
     // Nの数
@@ -35,11 +36,14 @@ int main(int argc, char const* argv[])
     
     //初期集団の生成
     struct gene_struct gene_list[gene_num];
-    makeIniGene(gene_list, size);
-    
-/*
+    makeIniGene(gene_list, gene_num, size);
+    for(int i=0; i<size; i++){
+        printf("%d ", gene_list[0].gene[i]);
+    }
+    printf("\n");
     //学習ループ
     n = 1;
+/*
     while(1){
         
     }
@@ -49,11 +53,33 @@ int main(int argc, char const* argv[])
 
 /* Boardを出力 */
 void board_print(int size) {
+    
 }
 
 /* 遺伝子生成 */
-void makeIniGene(int gene_num, int size){
-    
+void makeIniGene(struct gene_struct *genes, int gene_num, int size){
+    for(int i=0; i<gene_num; i++){              //遺伝子数ループさせる
+        int gene[size];                         //構造体へ保存する配列の宣言
+        for(int j=0; j<size; j++){
+            gene[j] = j;
+        }
+
+        for(int j=0; j<size; j++){              //遺伝子配列のシャッフル
+            int n = rand() % size;
+            int tmp = gene[n];
+            gene[n] = gene[j];
+            gene[j] = tmp;
+        }
+
+        genes->gene = gene;
+        genes++;
+        /*
+        for(int i=0; i<size; i++){
+            printf("%d ", genes->gene[i]);
+        }
+        printf("\n");
+        */
+    }
 }
 
 /* 評価関数 */
