@@ -37,31 +37,19 @@ def makeIniGene(gene_num, size):
 #評価関数
 def calcFitness(gene, size):
     fitness = 0
-    board = []
-    line = []
-    for i in range(0, size):
-        line = []
-        for j in range(0, size):
-            if j == gene[i]:
-                line.append(1)
-            else:
-                line.append(0)
-        board.append(line)
+    gVec = [(-1,-1), (-1,1), (1,-1), (1,1)]
+
+    for i in range(size):
+        for vec in gVec:
+            for j in range(1, size):
+                x = vec[1] * j + gene[i]
+                y = vec[0] * j + i
+                if x < 0 or x >= size or y < 0 or y >= size:
+                    break
+                
+                if x == gene[y]:
+                    fitness += 1
     
-
-    gVec = [(-1,-1), (-1,0), (-1,1), (0,-1), (0,1), (1,-1), (1,0), (1,1)]
-    for i in range(0, size):
-        for j in range(0, size):
-            val = getCell(board, (i,j), (0,0), size)
-            if val == 1:
-                for vec in gVec:
-                    for k in range(1, size):
-                        valofst = getCell(board, (i,j), (vec[0]*k, vec[1]*k), size)
-                        if valofst == 1:
-                            fitness += 1
-                        elif valofst == -1:
-                            break
-
     return fitness
 
 
@@ -166,6 +154,7 @@ def gene_sort(gene_list, size, count):
 
     #淘汰は一旦1つだけ行う
     gene_list[-1] = gene_list[0]
+    gene_list[1] = gene_list[0]
 
     return gene_list
 
