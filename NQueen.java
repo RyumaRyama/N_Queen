@@ -33,7 +33,30 @@ public class NQueen {
         return ini_gene;
     }
 
+    private static int calcFitness(int gene[], int size){
+
+        int fitness = 0;
+        int [][] gVec = {{-1,-1},{-1,1},{1,-1},{1,1}};
+
+        for(int i = 0; i < size; i ++){
+            for(int j = 0; j < gVec.length; j ++){
+                for(int k = 1; k < size; k ++){
+                    int x = gVec[j][1] * k + gene[i];
+                    int y = gVec[j][0] * k + i;
+                    if((x < 0) || (x >= size) || (y < 0) || (y >= size)){
+                        break;
+                    }
+                    if(x == gene[y]){
+                        fitness ++;
+                    }
+                } 
+            }
+        }
+        return fitness;
+    } 
+
     //評価関数
+    /*
     private static int calcFitness(int gene, int size){
         int fitness = 0;
         Board<String> board [] = new ArrayList<String>();
@@ -69,6 +92,7 @@ public class NQueen {
         }
         return fitness;
     }
+    */
 
     def getCell(board, pos, ofst, size):
         posx = pos[0] + ofst[0]
@@ -133,17 +157,29 @@ public class NQueen {
             gene = random.randint(0,len(gene_list)-1)
             random.shuffle(gene_list[gene])
     
-
     //適応度を基準にソートし，淘汰と増殖を行う(Java)
-    private static void geneSort(int geneList[], int size, int count) {
+    private static int[][] geneSort(int geneList[][], int size) {
         
         int [][] fitGene = new int [geneList.length][geneList[0].length+1]; 
         for (int i = 0; i < geneList.length; i++){
                 int [] addGene = geneList[i];
-                fitGene[i] = addGene;
+                for (int j = 0; j < fitGene[0].length; j++){
+                    if(j == fitGene[0].length - 1){
+                        fitGene[i][j] = calcFitness(addGene, geneList[0].length);
+                    }else{
+                        fitGene[i][j] = addGene[j];
+                    }
+
+                }
+
+
         }
         Arrays.sort(fitGene, (a, b) -> Integer.compare(a[geneList[0].length], b[geneList[0].length]));
+        return fitGene;
     }
+
+
+
 
 
     //適応度を基準にソートし，淘汰と増殖を行う
