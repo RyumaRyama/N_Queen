@@ -33,69 +33,60 @@ public class NQueen {
         return ini_gene;
     }
 
-    //評価関数
-    private static int calcFitness(int gene, int size){
-        int fitness = 0;
-        Board<String> board [] = new ArrayList<String>();
-        Line<String> line [] = new ArrayList<String>();
-        for(int i = 0; i < size; i++){
-            line = []
-            for(int j = 0; j < size; j++){
-                if( j == gene[i]){
-                    line.add(1);
-                }else{
-                    line.add(0);
-                }
-            }
-            board.add(line);
-        }
+    private static int calcFitness(int gene[], int size){
 
-        String[] gVec = new String[1];
-        gVec = [(-1,-1), (-1,0), (-1,1), (0,-1), (0,1), (1,-1), (1,0), (1,1)]
-        for(int i = 0; i < size; i++){
-            for(int j = 0; j < size; j++){
-                int val = getCell(board, (i,j), (0,0), size)
-                if(val == 1){
-                    for(String vec: gVec){
-                        for k in range(1, size):
-                            valofst = getCell(board, (i,j), (vec[0]*k, vec[1]*k), size)
-                            if valofst == 1:
-                                fitness += 1
-                            elif valofst == -1:
-                                break
+        int fitness = 0;
+        int [][] gVec = {{-1,-1},{-1,1},{1,-1},{1,1}};
+
+        for(int i = 0; i < size; i ++){
+            for(int j = 0; j < gVec.length; j ++){
+                for(int k = 1; k < size; k ++){
+                    int x = gVec[j][1] * k + gene[i];
+                    int y = gVec[j][0] * k + i;
+                    if((x < 0) || (x >= size) || (y < 0) || (y >= size)){
+                        break;
                     }
-                }
+                    if(x == gene[y]){
+                        fitness ++;
+                    }
+                } 
             }
         }
         return fitness;
-    }
+    } 
 
-    def getCell(board, pos, ofst, size):
+
+    public static int getCell(int board, String pos[], String ofst[], int size) {
+        int posx;
+        int posy;
         posx = pos[0] + ofst[0]
         posy = pos[1] + ofst[1]
-        if posx >= 0 and posy >= 0 and posx < size and posy < size:
+        if (posx >= 0 && posy >= 0 && posx < size && posy < size) {
             val = board[posx][posy]
-        else:
+        } else {
             val = -1
-
-        return val
+        }
+        return val;
+    }
 
 
     //順列表現と順序表現へ変換
-    def p_to_o(gene, size):
-        converted = []
-        num_list = []
+    public static int p_to_o(int gene, int size) {
+      Board<String> board [] = new ArrayList<String>();
+        Converted<String> converted [] = new ArrayList<String>();
+        Num_list<String> num_list [] = new ArrayList<String>();
         //数値が1からサイズ分まで順番に入っているリストを作成
-        for num in range(size):
+        for(String num: size){
             num_list.append(num)
+        }
 
         //遺伝子変換
-        for num in gene:
-            converted.append(num_list.index(num))
-            num_list.remove(num)
-
-        return converted
-
+        for (String num: gene){
+            converted.add(num_list.index(num));
+            num_list.removeAll(num);
+        }
+        return converted;
+    }
 
     //順序表現から順列表現へ変換
     def o_to_p(gene, size):
@@ -133,17 +124,28 @@ public class NQueen {
             gene = random.randint(0,len(gene_list)-1)
             random.shuffle(gene_list[gene])
     
-
     //適応度を基準にソートし，淘汰と増殖を行う(Java)
-    private static void geneSort(int geneList[], int size, int count) {
+    private static int[][] geneSort(int geneList[][], int size) {
         
-        int [][] fitGene = new int [geneList.length][geneList[0].length+1]; 
+        int [][] fitGene = new int [geneList.length][geneList[0].length+1];
         for (int i = 0; i < geneList.length; i++){
                 int [] addGene = geneList[i];
-                fitGene[i] = addGene;
+                for (int j = 0; j < fitGene[0].length; j++){
+                    if(j == fitGene[0].length - 1){
+                        fitGene[i][j] = calcFitness(addGene, geneList[0].length);
+                    }else{
+                        fitGene[i][j] = addGene[j];
+                    }
+
+                }
+
         }
         Arrays.sort(fitGene, (a, b) -> Integer.compare(a[geneList[0].length], b[geneList[0].length]));
+        return fitGene;
     }
+
+
+
 
 
     //適応度を基準にソートし，淘汰と増殖を行う
