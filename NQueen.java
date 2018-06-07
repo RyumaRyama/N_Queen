@@ -70,32 +70,37 @@ public class NQueen {
         return fitness;
     }
 
-    def getCell(board, pos, ofst, size):
+    public static int getCell(int board, String pos[], String ofst[], int size) {
+        int posx;
+        int posy;
         posx = pos[0] + ofst[0]
         posy = pos[1] + ofst[1]
-        if posx >= 0 and posy >= 0 and posx < size and posy < size:
+        if (posx >= 0 && posy >= 0 && posx < size && posy < size) {
             val = board[posx][posy]
-        else:
+        } else {
             val = -1
-
-        return val
+        }
+        return val;
+    }
 
 
     //順列表現と順序表現へ変換
-    def p_to_o(gene, size):
-        converted = []
-        num_list = []
+    public static int p_to_o(int gene, int size) {
+      Board<String> board [] = new ArrayList<String>();
+        Converted<String> converted [] = new ArrayList<String>();
+        Num_list<String> num_list [] = new ArrayList<String>();
         //数値が1からサイズ分まで順番に入っているリストを作成
-        for num in range(size):
+        for(String num: size){
             num_list.append(num)
+        }
 
         //遺伝子変換
-        for num in gene:
-            converted.append(num_list.index(num))
-            num_list.remove(num)
-
-        return converted
-
+        for (String num: gene){
+            converted.add(num_list.index(num));
+            num_list.removeAll(num);
+        }
+        return converted;
+    }
 
     //順序表現から順列表現へ変換
     def o_to_p(gene, size):
@@ -132,12 +137,12 @@ public class NQueen {
         if random.randint(0, 4) == 0:
             gene = random.randint(0,len(gene_list)-1)
             random.shuffle(gene_list[gene])
-    
+
 
     //適応度を基準にソートし，淘汰と増殖を行う(Java)
     private static void geneSort(int geneList[], int size, int count) {
-        
-        int [][] fitGene = new int [geneList.length][geneList[0].length+1]; 
+
+        int [][] fitGene = new int [geneList.length][geneList[0].length+1];
         for (int i = 0; i < geneList.length; i++){
                 int [] addGene = geneList[i];
                 fitGene[i] = addGene;
