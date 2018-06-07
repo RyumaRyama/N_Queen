@@ -1,22 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 /* 構造体宣言 */
-struct gene_struct{
-    int *gene;
+typedef struct {
+    int** gene;
     int fitness;
-};
+}gene_struct;
 
 /* 関数プロトタイプ宣言 */
 void board_print(int size);
 void calcFitness(int size);
-void makeIniGene(struct gene_struct *genes, int gene_num, int size);
+void makeIniGene(int** gene_list, int gene_num, int size);
 void p_to_o(int size); 
 void o_to_p(int size);
 void cross(int size);
 void mutation(int size);
 void gene_sort(int size,int count);
-
 
 /* NQueen本体 */
 int main(int argc, char const* argv[])
@@ -25,6 +25,8 @@ int main(int argc, char const* argv[])
         puts("Use '[FILE NAME] [QUEEN NUM]'.");
         return 1;
     }
+
+    srand(time(NULL));
 
     int size, gene_num, n;
     
@@ -35,12 +37,18 @@ int main(int argc, char const* argv[])
     gene_num = 10;
     
     //初期集団の生成
-    struct gene_struct gene_list[gene_num];
-    makeIniGene(gene_list, gene_num, size);
+    gene_struct gene_list;
+    gene_list.gene = malloc(sizeof(int *) * gene_num);
     for(int i=0; i<size; i++){
-        printf("%d ", gene_list[0].gene[i]);
+        gene_list.gene[i] = malloc(sizeof(int) * size);
     }
-    printf("\n");
+    makeIniGene(gene_list.gene, gene_num, size);
+    for(int i=0; i<gene_num; i++){
+        for(int j=0; j<size; j++){
+            printf("%d ", gene_list.gene[i][j]);
+        }
+        printf("\n");
+    }
     //学習ループ
     n = 1;
 /*
@@ -57,30 +65,40 @@ void board_print(int size) {
 }
 
 /* 遺伝子生成 */
-void makeIniGene(struct gene_struct *genes, int gene_num, int size){
-    for(int i=0; i<gene_num; i++){              //遺伝子数ループさせる
-        int gene[size];                         //構造体へ保存する配列の宣言
+void makeIniGene(int** gene_list, int gene_num, int size){
+    for(int i=0; i<gene_num; i++){
+        int gene[size];
+        
         for(int j=0; j<size; j++){
             gene[j] = j;
         }
 
         for(int j=0; j<size; j++){              //遺伝子配列のシャッフル
-            int n = rand() % size;
-            int tmp = gene[n];
-            gene[n] = gene[j];
-            gene[j] = tmp;
+                int n = rand() % size;
+                int tmp = gene[n];
+                gene[n] = gene[j];
+                gene[j] = tmp;
         }
-
-        genes->gene = gene;
-        genes++;
+        gene_list[i] = gene;
         /*
-        for(int i=0; i<size; i++){
-            printf("%d ", genes->gene[i]);
+        for(int k=0; k<=i; k++){
+            for(int j=0; j<size; j++){
+                printf("%d ", gene_list[k].gene[j]);
+            }
+            printf("\n");
         }
         printf("\n");
         */
     }
+/*
+    for(int i=0; i<gene_num; i++){
+            printf("%d ", *gene_list);
+            *gene_list++;
+    }
+    printf("\n");
+    */
 }
+
 
 /* 評価関数 */
 void calcFitness(int size) {
