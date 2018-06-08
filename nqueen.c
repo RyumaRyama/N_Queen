@@ -106,31 +106,33 @@ void calcFitness(int size) {
 }
 
 /* 順列表現と順序表現へ変更 
-void p_to_o(gene_struct gene_struct,int size) {
+void p_to_o(int* gene_list,int size) {
     int converted[size];
     //数値が1からサイズ分まで順番に入っているリストを作成
     int num_list[size];  
     
-    //geneの配列数の取得
-    int gene_number = sizeof(gene_struct.gene) / sizeof(gene_struct.gene[0]);
+    //gene_listの配列数の取得
+    int gene_number = sizeof(gene_list) / sizeof(gene_list[0]);
     //遺伝子変換
     for (int i = 0; i < gene_number; i++) {
-       converted[i] = index(num_list,size);
+       converted[i] = index_num(num_list,size);
     }
-    return converted; 
 }
 */
 
-/* 要素のindexを返す */
-int index(int *list,int element) {
+/* 要素のindexを返す 
+int index_num(int *list,int element) {
     int list_number = sizeof(list) / sizeof(list[0]);        //配列数取得
-    for (int i = 0; i < list_number; i++) {                  //要素に対するindexを検索
-        if (list[i] == element) {                            //見つけた場合，indexを返す
-            return i;      
+    for (int i = 0; i < gene_num; i++) {
+        for (int j = 0; j < list_number; j++) {                  //要素に対するindexを検索
+            if (list[i*list_number + j] == element) {                            //見つけた場合，indexを返す
+                return i*list_number + j;      
+            }
         }
-    }
     return -1;                                               //見つからなかった場合，-1を返す
+    }
 }
+*/
 
 /* 順序表現から順列表現へ変換 */
 void o_to_p(int size) {
