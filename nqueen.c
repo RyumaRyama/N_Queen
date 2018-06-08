@@ -88,11 +88,12 @@ void makeIniGene(gene_struct* gene_list, int gene_num, int size){
 void calcFitness(gene_struct* gene_list, int gene_num, int size) {
     int gVec[4][2] = {{-1, -1}, {-1, 1}, {1, -1}, {1, 1}};
     for(int i=0; i<gene_num; i++){
+        *gene_list[i].fitness = 0;
         for(int j=0; j<size; j++){
             for(int vec=0; vec<4; vec++){
                 for(int k=1; k<size; k++){
                     int x = gVec[vec][1] * k + gene_list[i].gene[j];
-                    int y = gVec[vec][0] * k + i;
+                    int y = gVec[vec][0] * k + j;
                     
                     if(x < 0 || x >= size || y < 0 || y >= size)
                         break;
@@ -103,7 +104,6 @@ void calcFitness(gene_struct* gene_list, int gene_num, int size) {
             }
         }
     }
-
 }
 
 /* 順列表現と順序表現へ変更 
