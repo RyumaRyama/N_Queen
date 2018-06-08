@@ -125,54 +125,44 @@ public class NQueen {
             random.shuffle(gene_list[gene])
     
     //適応度を基準にソートし，淘汰と増殖を行う(Java)
+
     public static int[][] geneSort(int geneList[][], int size) {
         
-        int [][] fitGene = new int [geneList.length][geneList[0].length+1];
+        int [][] fitGene = new int [geneList.length][size+1]; 
+        int [][] sortList = new int [geneList.length][size];
+
         for (int i = 0; i < geneList.length; i++){
                 int [] addGene = geneList[i];
-                for (int j = 0; j < fitGene[0].length; j++){
-                    if(j == fitGene[0].length - 1){
-                        fitGene[i][j] = calcFitness(addGene, geneList[0].length);
+                for (int j = 0; j < size+1; j++){
+                    if(j == size){
+                        fitGene[i][j] = calcFitness(addGene, size);
                     }else{
                         fitGene[i][j] = addGene[j];
                     }
-
                 }
-
         }
+
         Arrays.sort(fitGene, (a, b) -> Integer.compare(a[geneList[0].length], b[geneList[0].length]));
-        return fitGene;
+       
+        if(fitGene[0][size]==0){
+            System.out.println("終わり");
+            // boardの出力
+            // 時間の出力
+            System.exit(0);
+        } 
+        
+        for (int i = 0; i < geneList.length; i++){
+                int [] addGene = fitGene[i];
+                for (int j = 0; j < size; j++){
+                    sortList[i][j] = addGene[j];
+                }
+        }
+
+        sortList[geneList.length-1] = sortList[0];
+        return sortList;
+
     }
 
-
-
-
-
-    //適応度を基準にソートし，淘汰と増殖を行う
-    def gene_sort(gene_list, size, count):
-        fit_gene = []
-        for gene in gene_list:
-            add_gene = []
-            add_gene.append(gene[:])
-            add_gene.append(calcFitness(gene, size))
-            fit_gene.append(add_gene)
-
-        fit_gene.sort(key=itemgetter(1))
-
-        //適応度が0ならプログラム終了
-        if fit_gene[0][1] == 0:
-            print("count {}".format(count))
-            board_print(fit_gene[0][0], size)
-            sys.exit(0)
-
-        gene_list = []
-        for gene in fit_gene:
-            gene_list.append(gene.pop(0))
-
-        //淘汰は一旦1つだけ行う
-        gene_list[-1] = gene_list[0]
-
-        return gene_list
 
 
     //NQueen本体
