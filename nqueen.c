@@ -4,14 +4,14 @@
 
 /* 構造体宣言 */
 typedef struct {
-    int** gene;
+    int* gene;
     int fitness;
 }gene_struct;
 
 /* 関数プロトタイプ宣言 */
 void board_print(int size);
 void calcFitness(int size);
-void makeIniGene(int** gene_list, int gene_num, int size);
+void makeIniGene(gene_struct* gene_list, int gene_num, int size);
 void p_to_o(int size); 
 void o_to_p(int size);
 void cross(int size);
@@ -37,15 +37,11 @@ int main(int argc, char const* argv[])
     gene_num = 10;
     
     //初期集団の生成
-    gene_struct gene_list;
-    gene_list.gene = malloc(sizeof(int *) * gene_num);
-    for(int i=0; i<size; i++){
-        gene_list.gene[i] = malloc(sizeof(int) * size);
-    }
-    makeIniGene(gene_list.gene, gene_num, size);
+    gene_struct gene_list[gene_num];
+    makeIniGene(gene_list, gene_num, size);
     for(int i=0; i<gene_num; i++){
         for(int j=0; j<size; j++){
-            printf("%d ", gene_list.gene[i][j]);
+            printf("%d ", gene_list[i].gene[j]);
         }
         printf("\n");
     }
@@ -56,6 +52,8 @@ int main(int argc, char const* argv[])
         
     }
 */
+    for(int i=0; i<gene_num; i++)       //領域の開放
+        free(gene_list[i].gene);
     return 0;
 }
 
@@ -65,38 +63,20 @@ void board_print(int size) {
 }
 
 /* 遺伝子生成 */
-void makeIniGene(int** gene_list, int gene_num, int size){
+void makeIniGene(gene_struct* gene_list, int gene_num, int size){
     for(int i=0; i<gene_num; i++){
-        int gene[size];
-        
+        gene_list[i].gene = malloc(sizeof(int) * size); //遺伝子分の領域を確保
         for(int j=0; j<size; j++){
-            gene[j] = j;
+            gene_list[i].gene[j] = j;
         }
 
         for(int j=0; j<size; j++){              //遺伝子配列のシャッフル
                 int n = rand() % size;
-                int tmp = gene[n];
-                gene[n] = gene[j];
-                gene[j] = tmp;
+                int tmp = gene_list[i].gene[n];
+                gene_list[i].gene[n] = gene_list[i].gene[j];
+                gene_list[i].gene[j] = tmp;
         }
-        gene_list[i] = gene;
-        /*
-        for(int k=0; k<=i; k++){
-            for(int j=0; j<size; j++){
-                printf("%d ", gene_list[k].gene[j]);
-            }
-            printf("\n");
-        }
-        printf("\n");
-        */
     }
-/*
-    for(int i=0; i<gene_num; i++){
-            printf("%d ", *gene_list);
-            *gene_list++;
-    }
-    printf("\n");
-    */
 }
 
 
