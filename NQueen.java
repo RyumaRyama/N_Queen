@@ -7,7 +7,7 @@ import java.util.Collections;
 
 public class NQueen {
     //Boardを出力
-    private static void board_print(int gene, int size){
+    public static void board_print(int gene, int size){
         for (int i = 0; i < gene; i++){
             for (int j = 0; j < size; j++):
                 if (i == j){
@@ -20,7 +20,7 @@ public class NQueen {
 
 
     //遺伝子生成
-    private static int makeIniGene(int gene_num, int size){
+    public static int makeIniGene(int gene_num, int size){
         Ini_gene<String> ini_gene [] = new ArrayList<String>();
         for cnt in range(0, gene_num){
             Line<String> line [] = new ArrayList<String>();
@@ -33,7 +33,7 @@ public class NQueen {
         return ini_gene;
     }
 
-    private static int calcFitness(int gene[], int size){
+    public static int calcFitness(int gene[], int size){
 
         int fitness = 0;
         int [][] gVec = {{-1,-1},{-1,1},{1,-1},{1,1}};
@@ -125,7 +125,7 @@ public class NQueen {
             random.shuffle(gene_list[gene])
     
     //適応度を基準にソートし，淘汰と増殖を行う(Java)
-    private static int[][] geneSort(int geneList[][], int size) {
+    public static int[][] geneSort(int geneList[][], int size) {
         
         int [][] fitGene = new int [geneList.length][geneList[0].length+1];
         for (int i = 0; i < geneList.length; i++){
