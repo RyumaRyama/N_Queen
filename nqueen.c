@@ -9,7 +9,7 @@ typedef struct {
 }gene_struct;
 
 /* 関数プロトタイプ宣言 */
-void board_print(int size);
+void board_print(int* gene, int size);
 void calcFitness(gene_struct* gene_list, int gene_num, int size);
 void makeIniGene(gene_struct* gene_list, int gene_num, int size);
 void p_to_o(int size); 
@@ -61,8 +61,16 @@ int main(int argc, char const* argv[])
 }
 
 /* Boardを出力 */
-void board_print(int size) {
-    
+void board_print(int* gene, int size) {
+    for(int i=0; i<size; i++){
+        for(int j=0; j<size; j++){
+            if(gene[i] == j)
+                printf("Q ");
+            else
+                printf(". ");
+        }
+        printf("\n");
+    }
 }
 
 /* 遺伝子生成 */
