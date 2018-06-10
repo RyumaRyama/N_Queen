@@ -104,28 +104,36 @@ public class NQueen {
 
     //交叉
     //遺伝子のリストを渡すと交叉する
-    def cross (ini_gene, size):
-        for i in range(int(len(ini_gene)/2)):
-            n = i * 2
-            num = random.randint(1,size-2)
+    public static int[][] cross(int geneList[][], int size){
 
-            tmp = ini_gene[n][0:num]
-            tmp.extend(ini_gene[n+1][num:])
+        Random rand = new Random();
 
-            ini_gene[n+1] = ini_gene[n+1][0:num]
-            ini_gene[n+1].extend(ini_gene[n][num:])
+        int len = (int)geneList.length/2;
+        for (int i = 0; i < len; i ++){
 
-            ini_gene[n] = tmp
+            int n = i * 2;
+            int num = rand.nextInt(size -2) + 1;
 
+            int [] tmpList = geneList[n].clone();
+            
+            for(int j = num; j < size; j ++){
+                geneList[n][j] = geneList[n+1][j];
+                geneList[n+1][j] = tmpList[j];
+            } 
+        }       
+        return geneList;
+    }
+   
 
+    
     //突然変異
     def mutation(gene_list, size):
         if random.randint(0, 4) == 0:
             gene = random.randint(0,len(gene_list)-1)
             random.shuffle(gene_list[gene])
     
-    //適応度を基準にソートし，淘汰と増殖を行う(Java)
 
+    //適応度を基準にソートし，淘汰と増殖を行う(Java)
     public static int[][] geneSort(int geneList[][], int size) {
         
         int [][] fitGene = new int [geneList.length][size+1]; 
