@@ -16,7 +16,7 @@ void p_to_o(int size);
 void o_to_p(int size);
 void cross(gene_struct* gene_list,int gene_num, int size);
 void mutation(int size);
-void gene_sort(int size,int count);
+void gene_sort(gene_struct* gene_list, int gene_num, int size, int count);
 
 /* NQueen本体 */
 int main(int argc, char const* argv[])
@@ -46,9 +46,8 @@ int main(int argc, char const* argv[])
         }
         printf("  : %d \n", *gene_list[i].fitness);
     }
+    gene_sort(gene_list, gene_num, size, 0);
     printf("\n");
-    cross(gene_list, gene_num, size);
-    calcFitness(gene_list, gene_num, size);
     for(int i=0; i<gene_num; i++){
         for(int j=0; j<size; j++){
             printf("%d ", gene_list[i].gene[j]);
@@ -187,5 +186,34 @@ void mutation(int size) {
 }
 
 /* 適応度を基準にソートし，淘汰と増殖を行う */
-void gene_sort(int size,int count){
+void gene_sort(gene_struct* gene_list, int gene_num, int size, int count){
+    calcFitness(gene_list, gene_num, size);
+    
+    //適応度をもとにソーティングを行う
+    for(int i=1; i<gene_num; i++){
+        int n = i;
+        while(n > 0){
+            if(*gene_list[n].fitness < *gene_list[n-1].fitness){
+                gene_struct tmp = gene_list[n];
+                gene_list[n] = gene_list[n-1];
+                gene_list[n-1] = tmp;
+            }
+            n--;
+        }
+    }
+
+    //最も良い適応度を出力
+    printf("%d\n", *gene_list[0].fitness);
+
+    //適応度が0ならプログラムを終了させる
+    if(*gene_list[0].fitness == 0){
+        printf("count : %d\n", count);
+        board_print(gene_list[0].gene, size);
+        exit(0);
+    }
+
+    for(int i=0; i<size; i++){
+        gene_list[gene_num-1].gene[i] = gene_list[0].gene[i];
+        gene_list[1].gene[i] = gene_list[0].gene[i];
+    }
 }

@@ -141,7 +141,7 @@ def gene_sort(gene_list, size, count):
     for gene in fit_gene:
         gene_list.append(gene.pop(0))
 
-    #淘汰は一旦1つだけ行う
+    #淘汰は2つ行う
     gene_list[-1] = gene_list[0]
     gene_list[1] = gene_list[0]
 
