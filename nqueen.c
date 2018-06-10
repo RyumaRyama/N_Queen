@@ -19,8 +19,8 @@ void board_print(int* gene, int size);
 void calcFitness(gene_struct* gene_list, int gene_num, int size);
 void makeIniGene(gene_struct* gene_list, int gene_num, int size);
 void p_to_o(gene_struct* gene_list,int gene_num,int size);
-int index_num(int *list,int element,int gene_num,int size);
-void o_to_p(int size);
+int index_num(list* num_list,int gene_el,int size);
+void o_to_p(gene_struct* gene_list,int gene_num,int size);
 void cross(gene_struct* gene_list,int gene_num, int size);
 void mutation(gene_struct* gene_list, int gene_num, int size);
 void gene_sort(gene_struct* gene_list, int gene_num, int size, int count);
@@ -132,8 +132,7 @@ void calcFitness(gene_struct* gene_list, int gene_num, int size) {
 
 /* 順列表現と順序表現へ変更 */
 void p_to_o(gene_struct* gene_list,int gene_num,int size){
-    int converted[size];
-    
+    list* num_list;
     
     //遺伝子変換
     for (int i = 0; i < gene_num; i++) {
@@ -141,7 +140,7 @@ void p_to_o(gene_struct* gene_list,int gene_num,int size){
              
         }    
         for (int j = 0; j < size; j++) {
-           gene_list[i].gene[j] = index_num(num_list,gene_list[i].gene[j],size);
+            gene_list[i].gene[j] = index_num(num_list,gene_list[i].gene[j],size);
         }
     }
 }
