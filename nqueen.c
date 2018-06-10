@@ -8,11 +8,17 @@ typedef struct {
     int* fitness;
 }gene_struct;
 
+typedef struct cell{
+    int n;
+    struct cell* next;
+}list; 
+
 /* 関数プロトタイプ宣言 */
 void board_print(int* gene, int size);
 void calcFitness(gene_struct* gene_list, int gene_num, int size);
 void makeIniGene(gene_struct* gene_list, int gene_num, int size);
-void p_to_o(int size); 
+void p_to_o(gene_struct* gene_list,int gene_num,int size);
+int index_num(int *list,int element,int gene_num,int size);
 void o_to_p(int size);
 void cross(gene_struct* gene_list,int gene_num, int size);
 void mutation(int size);
@@ -25,9 +31,9 @@ int main(int argc, char const* argv[])
         puts("Use '[FILE NAME] [QUEEN NUM]'.");
         return 1;
     }
-
+    
     srand(time(NULL));
-
+    
     int size, gene_num, n;
     
     // Nの数
@@ -54,7 +60,7 @@ int main(int argc, char const* argv[])
         }
         printf("  : %d \n", *gene_list[i].fitness);
     }
-
+    
     //学習ループ
     n = 1;
 /*
@@ -90,7 +96,7 @@ void makeIniGene(gene_struct* gene_list, int gene_num, int size){
         for(int j=0; j<size; j++){
             gene_list[i].gene[j] = j;
         }
-
+            
         for(int j=0; j<size; j++){              //遺伝子配列のシャッフル
             int n = rand() % size;
             int tmp = gene_list[i].gene[n];
@@ -114,7 +120,7 @@ void calcFitness(gene_struct* gene_list, int gene_num, int size) {
                     
                     if(x < 0 || x >= size || y < 0 || y >= size)
                         break;
-
+                        
                     if(x == gene_list[i].gene[y])
                         *gene_list[i].fitness += 1;
                 }
@@ -123,37 +129,57 @@ void calcFitness(gene_struct* gene_list, int gene_num, int size) {
     }
 }
 
-/* 順列表現と順序表現へ変更 
-void p_to_o(int* gene_list,int size) {
+/* 順列表現と順序表現へ変更 */
+void p_to_o(gene_struct* gene_list,int gene_num,int size){
     int converted[size];
-    //数値が1からサイズ分まで順番に入っているリストを作成
-    int num_list[size];  
     
-    //gene_listの配列数の取得
-    int gene_number = sizeof(gene_list) / sizeof(gene_list[0]);
+    
     //遺伝子変換
-    for (int i = 0; i < gene_number; i++) {
-       converted[i] = index_num(num_list,size);
-    }
-}
-*/
-
-/* 要素のindexを返す 
-int index_num(int *list,int element) {
-    int list_number = sizeof(list) / sizeof(list[0]);        //配列数取得
     for (int i = 0; i < gene_num; i++) {
-        for (int j = 0; j < list_number; j++) {                  //要素に対するindexを検索
-            if (list[i*list_number + j] == element) {                            //見つけた場合，indexを返す
-                return i*list_number + j;      
-            }
+        for (int j = 0; j < size; j++) {
+             
+        }    
+        for (int j = 0; j < size; j++) {
+           gene_list[i].gene[j] = index_num(num_list,gene_list[i].gene[j],size);
         }
-    return -1;                                               //見つからなかった場合，-1を返す
     }
 }
-*/
+
+/* 要素のindexを返す */
+int index_num(list* num_list,int gene_el,int size) {
+    //一番目に要素がある場合
+    if (num_list->n == gene_el){ 
+        num_list = num_list->next;
+        return 0;
+    }
+    
+    //それ以降
+    int cnt = 1;
+    list* next = num_list->next;
+    while (next->next != NULL) {
+        if (next->n == gene_el) {                            //見つけた場合，indexを返す
+            num_list->next = next->next;
+            return cnt;      
+        }
+        cnt++;    
+        num_list = next;
+        next = next->next;
+    }
+    return -1;                                               //見つからなかった場合，-1を返す
+}
 
 /* 順序表現から順列表現へ変換 */
-void o_to_p(int size) {
+void o_to_p(gene_struct* gene_list,int gene_num,int size) {
+    int converted[size];    
+    int num_list[size];  //数値が1からサイズ分まで順番に入っているリストを作成
+    
+    //遺伝子変換
+    for (int i = 0; i < gene_num; i++) {
+        for (int j = 0; j < size; j++) {
+           converted[i] = index_num(num_list,i,gene_num,size);
+           gene_list[i].gene[j] = converted[j];
+        }
+    }
 }
 
 /* 交叉*/
