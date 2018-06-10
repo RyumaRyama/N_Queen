@@ -1,6 +1,4 @@
-'''
-argv[1] : Board size
-'''
+//argv[1] : Board size
 
 // java モジュール
 import java.util.Collections;
