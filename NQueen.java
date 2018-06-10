@@ -72,12 +72,12 @@ public class NQueen {
 
     //順列表現と順序表現へ変換
     public static int p_to_o(int gene, int size) {
-      Board<String> board [] = new ArrayList<String>();
+      	Board<String> board [] = new ArrayList<String>();
         Converted<String> converted [] = new ArrayList<String>();
         Num_list<String> num_list [] = new ArrayList<String>();
         //数値が1からサイズ分まで順番に入っているリストを作成
         for(String num: size){
-            num_list.append(num)
+            num_list.add(num);
         }
 
         //遺伝子変換
@@ -89,18 +89,20 @@ public class NQueen {
     }
 
     //順序表現から順列表現へ変換
-    def o_to_p(gene, size):
-        converted = []
-        num_list = []
+    public static int o_to_p(int gene, int size){
+        Converted<Stirng> converted [] = new ArrayList<String>();
+		Num_list<Stirng> num_list [] = new ArrayList<String>();
 
-        for num in range(size):
-            num_list.append(num)
+        for(String num: size){
+            num_list.add(num);
+		}
 
-        for num in gene:
-            converted.append(num_list.pop(num))
+        for(String num: gene){
+            converted.add(num_list.removeAll(num));
+		}
 
-        return converted
-
+        return converted;
+	}
 
     //交叉
     //遺伝子のリストを渡すと交叉する
