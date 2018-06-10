@@ -3,6 +3,7 @@
 #include <time.h>
 
 /* 構造体宣言 */
+//遺伝子
 typedef struct {
     int* gene;
     int* fitness;
