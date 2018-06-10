@@ -15,7 +15,7 @@ void makeIniGene(gene_struct* gene_list, int gene_num, int size);
 void p_to_o(int size); 
 void o_to_p(int size);
 void cross(gene_struct* gene_list,int gene_num, int size);
-void mutation(int size);
+void mutation(gene_struct* gene_list, int gene_num, int size);
 void gene_sort(gene_struct* gene_list, int gene_num, int size, int count);
 
 /* NQueen本体 */
@@ -182,7 +182,15 @@ void cross(gene_struct* gene_list, int gene_num,  int size) {
 }
 
 /* 突然変異 */
-void mutation(int size) {
+void mutation(gene_struct* gene_list, int gene_num, int size) {
+    int gene, m, n, tmp;
+    gene = rand() % gene_num;               //変異させる遺伝子を選択
+    m = rand() % size;                      //入れ替える場所を２つ決める
+    n = rand() % size;
+
+    tmp = gene_list[gene].gene[m];
+    gene_list[gene].gene[m] = gene_list[gene].gene[n];
+    gene_list[gene].gene[n] = tmp;
 }
 
 /* 適応度を基準にソートし，淘汰と増殖を行う */
