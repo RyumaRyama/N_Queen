@@ -124,14 +124,21 @@ public class NQueen {
         return geneList;
     }
    
-
-    
     //突然変異
-    def mutation(gene_list, size):
-        if random.randint(0, 4) == 0:
-            gene = random.randint(0,len(gene_list)-1)
-            random.shuffle(gene_list[gene])
-    
+    public static int[][] mutation(int geneList[][], int size){
+
+        Random rand = new Random();
+
+        int gene = rand.nextInt(geneList.length);
+        int num1 = rand.nextInt(size - 1);
+        int num2 = rand.nextInt(size - 1);
+
+        int tmp = geneList[gene][num1];
+        geneList[gene][num1] = geneList[gene][num2];
+        geneList[gene][num2] = tmp;
+
+        return geneList;
+    }
 
     //適応度を基準にソートし，淘汰と増殖を行う(Java)
     public static int[][] geneSort(int geneList[][], int size) {
