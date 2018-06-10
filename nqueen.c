@@ -14,7 +14,7 @@ void calcFitness(gene_struct* gene_list, int gene_num, int size);
 void makeIniGene(gene_struct* gene_list, int gene_num, int size);
 void p_to_o(int size); 
 void o_to_p(int size);
-void cross(int size);
+void cross(gene_struct* gene_list,int gene_num, int size);
 void mutation(int size);
 void gene_sort(int size,int count);
 
@@ -46,6 +46,16 @@ int main(int argc, char const* argv[])
         }
         printf("  : %d \n", *gene_list[i].fitness);
     }
+    printf("\n");
+    cross(gene_list, gene_num, size);
+    calcFitness(gene_list, gene_num, size);
+    for(int i=0; i<gene_num; i++){
+        for(int j=0; j<size; j++){
+            printf("%d ", gene_list[i].gene[j]);
+        }
+        printf("  : %d \n", *gene_list[i].fitness);
+    }
+
     //学習ループ
     n = 1;
 /*
@@ -83,10 +93,10 @@ void makeIniGene(gene_struct* gene_list, int gene_num, int size){
         }
 
         for(int j=0; j<size; j++){              //遺伝子配列のシャッフル
-                int n = rand() % size;
-                int tmp = gene_list[i].gene[n];
-                gene_list[i].gene[n] = gene_list[i].gene[j];
-                gene_list[i].gene[j] = tmp;
+            int n = rand() % size;
+            int tmp = gene_list[i].gene[n];
+            gene_list[i].gene[n] = gene_list[i].gene[j];
+            gene_list[i].gene[j] = tmp;
         }
     }
 }
@@ -145,18 +155,35 @@ int index_num(int *list,int element) {
 
 /* 順序表現から順列表現へ変換 */
 void o_to_p(int size) {
-    
 }
 
 /* 交叉*/
 /* 遺伝子のリストを渡すと交叉する */
-void cross(int size) {
-    
+void cross(gene_struct* gene_list, int gene_num,  int size) {
+    for(int i=0; i<gene_num/2; i++){
+        int n = i * 2;
+        int num = (rand() % size-3) + 1;
+        int tmp[size];
+
+        for(int j=0; j<size; j++){                  //n,n+1の配列を作成
+            if(j < num)
+                tmp[j] = gene_list[n].gene[j];
+            else
+                tmp[j] = gene_list[n+1].gene[j];
+        }
+
+        for(int j=0; j<size; j++){                  //n+1,nの配列を作成
+            if(j >= num)
+                gene_list[n+1].gene[j] = gene_list[n].gene[j];
+        }
+
+        for(int j=0; j<size; j++)
+            gene_list[n].gene[j] = tmp[j];
+    }
 }
 
 /* 突然変異 */
 void mutation(int size) {
-    
 }
 
 /* 適応度を基準にソートし，淘汰と増殖を行う */
