@@ -2,6 +2,9 @@
 
 // java モジュール
 import java.util.Collections;
+import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NQueen {
     //Boardを出力
@@ -24,8 +27,8 @@ public class NQueen {
         Ini_gene<Integer> ini_gene [] = new ArrayList<Integer>();
         for (int i = 0; i < gene_num; i++){
             Line<Integer> line [] = new ArrayList<Integer>();
-            for(int i = 0; i < size; i++){
-                line.add(i);
+            for(int j = 0; j < size; j++){
+                line.add(j);
             }
             Collections.shuffle(line);
             ini_gene.add(line);
@@ -49,11 +52,11 @@ public class NQueen {
                     if(x == gene[y]){
                         fitness ++;
                     }
-                } 
+                }
             }
         }
         return fitness;
-    } 
+    }
 
 
     public static int getCell(int board, Integer pos[], Integer ofst[], int size) {
@@ -117,15 +120,15 @@ public class NQueen {
             int num = rand.nextInt(size -2) + 1;
 
             int [] tmpList = geneList[n].clone();
-            
+
             for(int j = num; j < size; j ++){
                 geneList[n][j] = geneList[n+1][j];
                 geneList[n+1][j] = tmpList[j];
-            } 
-        }       
+            }
+        }
         return geneList;
     }
-   
+
     //突然変異
     public static int[][] mutation(int geneList[][], int size){
 
@@ -144,8 +147,8 @@ public class NQueen {
 
     //適応度を基準にソートし，淘汰と増殖を行う(Java)
     public static int[][] geneSort(int geneList[][], int size) {
-        
-        int [][] fitGene = new int [geneList.length][size+1]; 
+
+        int [][] fitGene = new int [geneList.length][size+1];
         int [][] sortList = new int [geneList.length][size];
 
         for (int i = 0; i < geneList.length; i++){
@@ -160,14 +163,14 @@ public class NQueen {
         }
 
         Arrays.sort(fitGene, (a, b) -> Integer.compare(a[geneList[0].length], b[geneList[0].length]));
-       
+
         if(fitGene[0][size]==0){
             System.out.println("終わり");
             // boardの出力
             // 時間の出力
             System.exit(0);
-        } 
-        
+        }
+
         for (int i = 0; i < geneList.length; i++){
                 int [] addGene = fitGene[i];
                 for (int j = 0; j < size; j++){
@@ -185,11 +188,11 @@ public class NQueen {
     //NQueen本体
     public static void main(String args[]) {
         //NxNのBoard，N個のQueen，のN
-        int size = (int)args[1];
+        int size = Integer.parseInt(args[1]);
 
         //１世代あたりの遺伝子の数
         int geneNum = 4;
-      
+
         //初期集団の生成
         int [][] geneList = makeIniGene(geneNum, size);
 
@@ -212,11 +215,11 @@ public class NQueen {
                 crossGene[i] = p_to_o(geneList[i], size);
 
             }
-            
+
 
             cross(crossGene, size);
 
-             
+
 
             for (int i = 0; i < geneList.length; i ++){
 
