@@ -19,8 +19,9 @@ void board_print(int* gene, int size);
 void calcFitness(gene_struct* gene_list, int gene_num, int size);
 void makeIniGene(gene_struct* gene_list, int gene_num, int size);
 void p_to_o(gene_struct* gene_list,int gene_num,int size);
-int index_num(list* num_list,int gene_el,int size);
+int index_num(list* num_list,int gene_el);
 void o_to_p(gene_struct* gene_list,int gene_num,int size);
+int pop_num(list* num_list,int gene_el);
 void cross(gene_struct* gene_list,int gene_num, int size);
 void mutation(gene_struct* gene_list, int gene_num, int size);
 void gene_sort(gene_struct* gene_list, int gene_num, int size, int count);
@@ -140,13 +141,13 @@ void p_to_o(gene_struct* gene_list,int gene_num,int size){
              
         }    
         for (int j = 0; j < size; j++) {
-            gene_list[i].gene[j] = index_num(num_list,gene_list[i].gene[j],size);
+            gene_list[i].gene[j] = index_num(num_list,gene_list[i].gene[j]);
         }
     }
 }
 
 /* 要素のindexを返す */
-int index_num(list* num_list,int gene_el,int size) {
+int index_num(list* num_list,int gene_el) {
     //一番目に要素がある場合
     if (num_list->n == gene_el){ 
         num_list = num_list->next;
@@ -170,15 +171,35 @@ int index_num(list* num_list,int gene_el,int size) {
 
 /* 順序表現から順列表現へ変換 */
 void o_to_p(gene_struct* gene_list,int gene_num,int size) {
-    int converted[size];    
-    int num_list[size];  //数値が1からサイズ分まで順番に入っているリストを作成
+    list* num_list;
     
     //遺伝子変換
     for (int i = 0; i < gene_num; i++) {
         for (int j = 0; j < size; j++) {
-           converted[i] = index_num(num_list,i,gene_num,size);
-           gene_list[i].gene[j] = converted[j];
+            gene_list[i].gene[j]  = pop_num(num_list,gene_list[i].gene[j]);
         }
+    }
+}
+
+/* 要素をPOPする*/
+int pop_num(list* num_list,int gene_el){
+    //一番目に要素がある場合
+    if (num_list->n == gene_el){ 
+        num_list = num_list->next;
+        return num_list -> n;
+    }
+    
+    //それ以降
+    int cnt = 1;
+    list* next = num_list->next;
+    while (next->next != NULL) {
+        if (cnt == gene_el) {
+            num_list->next = next -> next;
+            return next -> n;
+        }
+        cnt++;
+        num_list = next;
+        next = next->next;
     }
 }
 
