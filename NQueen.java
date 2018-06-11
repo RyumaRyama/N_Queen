@@ -15,13 +15,14 @@ public class NQueen {
                 }
             }
             System.out.println();
+         }
     }
 
 
     //遺伝子生成
-    public static int makeIniGene(int gene_num, int size){
+    public static int[][] makeIniGene(int gene_num, int size){
         Ini_gene<Integer> ini_gene [] = new ArrayList<Integer>();
-        for cnt in range(0, gene_num){
+        for (int i = 0; i < gene_num; i++){
             Line<Integer> line [] = new ArrayList<Integer>();
             for(int i = 0; i < size; i++){
                 line.add(i);
@@ -58,12 +59,12 @@ public class NQueen {
     public static int getCell(int board, Integer pos[], Integer ofst[], int size) {
         int posx;
         int posy;
-        posx = pos[0] + ofst[0]
-        posy = pos[1] + ofst[1]
+        posx = pos[0] + ofst[0];
+        posy = pos[1] + ofst[1];
         if (posx >= 0 && posy >= 0 && posx < size && posy < size) {
-            val = board[posx][posy]
+            val = board[posx][posy];
         } else {
-            val = -1
+            val = -1;
         }
         return val;
     }
@@ -89,8 +90,8 @@ public class NQueen {
 
     //順序表現から順列表現へ変換
     public static int o_to_p(int gene, int size){
-        Converted<Stirng> converted [] = new ArrayList<Integer>();
-		Num_list<Stirng> num_list [] = new ArrayList<Integer>();
+        Converted<Integer> converted [] = new ArrayList<Integer>();
+		Num_list<Integer> num_list [] = new ArrayList<Integer>();
 
         for(Integer num: size){
             num_list.add(num);
@@ -184,7 +185,7 @@ public class NQueen {
     //NQueen本体
     public static void main(String args[]) {
         //NxNのBoard，N個のQueen，のN
-        int size = int(argv[1]);
+        int size = (int)args[1];
 
         //１世代あたりの遺伝子の数
         int geneNum = 4;
@@ -215,7 +216,7 @@ public class NQueen {
 
             cross(crossGene, size);
 
-            int [] geneList;
+             
 
             for (int i = 0; i < geneList.length; i ++){
 
