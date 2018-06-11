@@ -25,6 +25,7 @@ int pop_num(list* num_list,int gene_el);
 void cross(gene_struct* gene_list,int gene_num, int size);
 void mutation(gene_struct* gene_list, int gene_num, int size);
 void gene_sort(gene_struct* gene_list, int gene_num, int size, int count);
+void makeNumList(list* num_list, int size);
 
 /* NQueen本体 */
 int main(int argc, char const* argv[])
@@ -202,6 +203,22 @@ int pop_num(list* num_list,int gene_el){
         next = next->next;
     }
 }
+
+
+//num_listを生成
+void makeNumList(list* num_list, int size){
+    list* look = num_list;
+    for(int i=0; i<size; i++){
+        look->n = i;
+        if(i != size-1){
+            look->next = malloc(sizeof(list));
+            look = look->next;
+        }
+        else
+            look->next = NULL;
+    }
+}
+
 
 /* 交叉*/
 /* 遺伝子のリストを渡すと交叉する */
