@@ -30,7 +30,13 @@ public class NQueen {
             Collections.shuffle(line);
             ini_gene.add(line);
         }
-        int [][] array = ini_gene.toArray(new int[ini_gene.size()][size]);
+        //int [][] array = ini_gene.toArray(new int[ini_gene.size()][size]);
+        int [][] array = new int[ini_gene.size()][size];
+        for(int i = 0; i < ini_gene.size(); i ++){
+            for (int j = 0; j < size; j ++){
+               array[i][j] = ini_gene.get(i).get(j); 
+            }
+        }
         return array;
     }
 
@@ -88,7 +94,12 @@ public class NQueen {
             num_list.remove(gene[i]);
         }
 
-        int [] array = converted.toArray(new int[size]);
+
+        int [] array = new int[size];
+        for (int i = 0; i < size; i++){
+            array[i] = converted.get(i); 
+        }
+
         return array;
     }
 
@@ -106,7 +117,11 @@ public class NQueen {
             num_list.remove(gene[i]);
         }
 
-        int [] array = converted.toArray(new int[size]);
+        int [] array = new int[size];
+        for (int i = 0; i < size; i++){
+            array[i] = converted.get(i); 
+        }
+
         return array;
 	}
 
@@ -191,7 +206,7 @@ public class NQueen {
     //NQueen本体
     public static void main(String args[]) {
         //NxNのBoard，N個のQueen，のN
-        int size = Integer.parseInt(args[1]);
+        int size = Integer.parseInt(args[0]);
 
         //１世代あたりの遺伝子の数
         int geneNum = 4;
