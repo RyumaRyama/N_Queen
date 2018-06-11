@@ -134,7 +134,8 @@ void calcFitness(gene_struct* gene_list, int gene_num, int size) {
 
 /* 順列表現と順序表現へ変更 */
 void p_to_o(gene_struct* gene_list,int gene_num,int size){
-    list* num_list;
+    list* num_list = malloc(sizeof(list));
+    makeNumList(num_list,size);
     
     //遺伝子変換
     for (int i = 0; i < gene_num; i++) {
@@ -172,7 +173,8 @@ int index_num(list* num_list,int gene_el) {
 
 /* 順序表現から順列表現へ変換 */
 void o_to_p(gene_struct* gene_list,int gene_num,int size) {
-    list* num_list;
+    list* num_list = malloc(sizeof(list));
+    makeNumList(num_list,size);
     
     //遺伝子変換
     for (int i = 0; i < gene_num; i++) {
@@ -202,6 +204,7 @@ int pop_num(list* num_list,int gene_el){
         num_list = next;
         next = next->next;
     }
+    return -1;
 }
 
 
@@ -227,19 +230,19 @@ void cross(gene_struct* gene_list, int gene_num,  int size) {
         int n = i * 2;
         int num = (rand() % size-3) + 1;
         int tmp[size];
-
+       
         for(int j=0; j<size; j++){                  //n,n+1の配列を作成
             if(j < num)
                 tmp[j] = gene_list[n].gene[j];
             else
                 tmp[j] = gene_list[n+1].gene[j];
         }
-
+        
         for(int j=0; j<size; j++){                  //n+1,nの配列を作成
             if(j >= num)
                 gene_list[n+1].gene[j] = gene_list[n].gene[j];
         }
-
+        
         for(int j=0; j<size; j++)
             gene_list[n].gene[j] = tmp[j];
     }
@@ -251,7 +254,7 @@ void mutation(gene_struct* gene_list, int gene_num, int size) {
     gene = rand() % gene_num;               //変異させる遺伝子を選択
     m = rand() % size;                      //入れ替える場所を２つ決める
     n = rand() % size;
-
+    
     tmp = gene_list[gene].gene[m];
     gene_list[gene].gene[m] = gene_list[gene].gene[n];
     gene_list[gene].gene[n] = tmp;
@@ -273,17 +276,17 @@ void gene_sort(gene_struct* gene_list, int gene_num, int size, int count){
             n--;
         }
     }
-
+    
     //最も良い適応度を出力
     printf("%d\n", *gene_list[0].fitness);
-
+    
     //適応度が0ならプログラムを終了させる
     if(*gene_list[0].fitness == 0){
         printf("count : %d\n", count);
         board_print(gene_list[0].gene, size);
         exit(0);
     }
-
+    
     for(int i=0; i<size; i++){
         gene_list[gene_num-1].gene[i] = gene_list[0].gene[i];
         gene_list[1].gene[i] = gene_list[0].gene[i];
