@@ -49,13 +49,18 @@ int main(int argc, char const* argv[])
     gene_struct gene_list[gene_num];
     make_ini_gene(gene_list, gene_num, size);
     calc_fitness(gene_list, gene_num, size);
+    printf("初期集団の生成\n");
     for(int i=0; i<gene_num; i++){
         for(int j=0; j<size; j++){
             printf("%d ", gene_list[i].gene[j]);
         }
         printf("  : %d \n", *gene_list[i].fitness);
     }
-    gene_sort(gene_list, gene_num, size, 0);
+   
+    p_to_o(gene_list,gene_num,size);
+    o_to_p(gene_list,gene_num,size);
+    
+    /*
     printf("\n");
     for(int i=0; i<gene_num; i++){
         for(int j=0; j<size; j++){
@@ -63,14 +68,30 @@ int main(int argc, char const* argv[])
         }
         printf("  : %d \n", *gene_list[i].fitness);
     }
+    */
+    
     
     //学習ループ
     n = 1;
-/*
+    
+    //ループに入る
+    /*
     while(1){
+        //遺伝子が評価され，淘汰され，増殖する
+        gene_sort(gene_list, gene_num, size, 0);
         
+        //交叉する
+        cross(gene_list,gene_num, size);
+        p_to_o(gene_list,gene_num,size);
+        o_to_p(gene_list,gene_num,size);
+        
+        //突然変異する
+        mutation(gene_list, gene_num, size);
+        
+        n++;
     }
-*/
+    */
+    
     for(int i=0; i<gene_num; i++){       //領域の開放
         free(gene_list[i].gene);
         free(gene_list[i].fitness);
@@ -140,16 +161,23 @@ void p_to_o(gene_struct* gene_list,int gene_num,int size){
     //遺伝子変換
     for (int i = 0; i < gene_num; i++) {
         for (int j = 0; j < size; j++) {
-             
-        }    
-        for (int j = 0; j < size; j++) {
             gene_list[i].gene[j] = index_num(num_list,gene_list[i].gene[j]);
         }
+    }
+    
+    printf("\n順列表現と順序表現へ変更\n");
+    for(int i=0; i<gene_num; i++){
+        for(int j=0; j<size; j++){
+            printf("%d ", gene_list[i].gene[j]);
+        }
+        printf("  : %d \n", *gene_list[i].fitness);
     }
 }
 
 /* 要素のindexを返す */
 int index_num(list* num_list,int gene_el) {
+    list* TOP = num_list;       //先頭アドレスを保持
+    
     //一番目に要素がある場合
     if (num_list->n == gene_el){ 
         num_list = num_list->next;
@@ -160,14 +188,19 @@ int index_num(list* num_list,int gene_el) {
     int cnt = 1;
     list* next = num_list->next;
     while (next->next != NULL) {
+        printf("%d\n",next->next);
+         
         if (next->n == gene_el) {                            //見つけた場合，indexを返す
             num_list->next = next->next;
+            num_list = TOP;
             return cnt;      
         }
         cnt++;    
         num_list = next;
         next = next->next;
     }
+    num_list = TOP;
+    printf("%d\n",next->next);
     return -1;                                               //見つからなかった場合，-1を返す
 }
 
@@ -181,6 +214,14 @@ void o_to_p(gene_struct* gene_list,int gene_num,int size) {
         for (int j = 0; j < size; j++) {
             gene_list[i].gene[j]  = pop_num(num_list,gene_list[i].gene[j]);
         }
+    }
+    
+    printf("\n順序表現から順列表現へ変更\n");
+    for(int i=0; i<gene_num; i++){
+        for(int j=0; j<size; j++){
+            printf("%d ", gene_list[i].gene[j]);
+        }
+        printf("  : %d \n", *gene_list[i].fitness);
     }
 }
 
