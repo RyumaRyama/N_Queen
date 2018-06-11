@@ -16,8 +16,8 @@ typedef struct cell{
 
 /* 関数プロトタイプ宣言 */
 void board_print(int* gene, int size);
-void calcFitness(gene_struct* gene_list, int gene_num, int size);
-void makeIniGene(gene_struct* gene_list, int gene_num, int size);
+void calc_fitness(gene_struct* gene_list, int gene_num, int size);
+void make_ini_gene(gene_struct* gene_list, int gene_num, int size);
 void p_to_o(gene_struct* gene_list,int gene_num,int size);
 int index_num(list* num_list,int gene_el);
 void o_to_p(gene_struct* gene_list,int gene_num,int size);
@@ -25,7 +25,7 @@ int pop_num(list* num_list,int gene_el);
 void cross(gene_struct* gene_list,int gene_num, int size);
 void mutation(gene_struct* gene_list, int gene_num, int size);
 void gene_sort(gene_struct* gene_list, int gene_num, int size, int count);
-void makeNumList(list* num_list, int size);
+void make_num_list(list* num_list, int size);
 
 /* NQueen本体 */
 int main(int argc, char const* argv[])
@@ -47,8 +47,8 @@ int main(int argc, char const* argv[])
     
     //初期集団の生成
     gene_struct gene_list[gene_num];
-    makeIniGene(gene_list, gene_num, size);
-    calcFitness(gene_list, gene_num, size);
+    make_ini_gene(gene_list, gene_num, size);
+    calc_fitness(gene_list, gene_num, size);
     for(int i=0; i<gene_num; i++){
         for(int j=0; j<size; j++){
             printf("%d ", gene_list[i].gene[j]);
@@ -92,7 +92,7 @@ void board_print(int* gene, int size) {
 }
 
 /* 遺伝子生成 */
-void makeIniGene(gene_struct* gene_list, int gene_num, int size){
+void make_ini_gene(gene_struct* gene_list, int gene_num, int size){
     for(int i=0; i<gene_num; i++){
         gene_list[i].gene = malloc(sizeof(int) * size); //遺伝子分の領域を確保
         gene_list[i].fitness = malloc(sizeof(int));
@@ -111,15 +111,15 @@ void makeIniGene(gene_struct* gene_list, int gene_num, int size){
 
 
 /* 評価関数 */
-void calcFitness(gene_struct* gene_list, int gene_num, int size) {
-    int gVec[4][2] = {{-1, -1}, {-1, 1}, {1, -1}, {1, 1}};
+void calc_fitness(gene_struct* gene_list, int gene_num, int size) {
+    int g_vec[4][2] = {{-1, -1}, {-1, 1}, {1, -1}, {1, 1}};
     for(int i=0; i<gene_num; i++){
         *gene_list[i].fitness = 0;
         for(int j=0; j<size; j++){
             for(int vec=0; vec<4; vec++){
                 for(int k=1; k<size; k++){
-                    int x = gVec[vec][1] * k + gene_list[i].gene[j];
-                    int y = gVec[vec][0] * k + j;
+                    int x = g_vec[vec][1] * k + gene_list[i].gene[j];
+                    int y = g_vec[vec][0] * k + j;
                     
                     if(x < 0 || x >= size || y < 0 || y >= size)
                         break;
@@ -135,7 +135,7 @@ void calcFitness(gene_struct* gene_list, int gene_num, int size) {
 /* 順列表現と順序表現へ変更 */
 void p_to_o(gene_struct* gene_list,int gene_num,int size){
     list* num_list = malloc(sizeof(list));
-    makeNumList(num_list,size);
+    make_num_list(num_list,size);
     
     //遺伝子変換
     for (int i = 0; i < gene_num; i++) {
@@ -174,7 +174,7 @@ int index_num(list* num_list,int gene_el) {
 /* 順序表現から順列表現へ変換 */
 void o_to_p(gene_struct* gene_list,int gene_num,int size) {
     list* num_list = malloc(sizeof(list));
-    makeNumList(num_list,size);
+    make_num_list(num_list,size);
     
     //遺伝子変換
     for (int i = 0; i < gene_num; i++) {
@@ -209,7 +209,7 @@ int pop_num(list* num_list,int gene_el){
 
 
 //num_listを生成
-void makeNumList(list* num_list, int size){
+void make_num_list(list* num_list, int size){
     list* look = num_list;
     for(int i=0; i<size; i++){
         look->n = i;
@@ -262,7 +262,7 @@ void mutation(gene_struct* gene_list, int gene_num, int size) {
 
 /* 適応度を基準にソートし，淘汰と増殖を行う */
 void gene_sort(gene_struct* gene_list, int gene_num, int size, int count){
-    calcFitness(gene_list, gene_num, size);
+    calc_fitness(gene_list, gene_num, size);
     
     //適応度をもとにソーティングを行う
     for(int i=1; i<gene_num; i++){
