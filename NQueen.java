@@ -1,10 +1,7 @@
 //argv[1] : Board size
 
 // java モジュール
-import java.util.Collections;
-import java.util.Random;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class NQueen {
     //Boardを出力
@@ -12,28 +9,29 @@ public class NQueen {
         for (int i = 0; i < gene; i++){
             for (int j = 0; j < size; j++){
                 if (i == j){
-                    System.out.printf("1" + " ");
+                    System.out.print("Q" + " ");
                 }else{
-                    System.out.printf("0" + " ");
+                    System.out.print("." + " ");
                 }
             }
-            System.out.println();
+            System.out.println(" ");
          }
     }
 
 
     //遺伝子生成
     public static int[][] makeIniGene(int gene_num, int size){
-        Ini_gene<Integer> ini_gene [] = new ArrayList<Integer>();
+        ArrayList<ArrayList<Integer>> ini_gene = new ArrayList<ArrayList<Integer>>();
         for (int i = 0; i < gene_num; i++){
-            Line<Integer> line [] = new ArrayList<Integer>();
+            ArrayList<Integer> line = new ArrayList<Integer>();
             for(int j = 0; j < size; j++){
                 line.add(j);
             }
             Collections.shuffle(line);
             ini_gene.add(line);
         }
-        return ini_gene;
+        int [][] array = ini_gene.toArray(new int[ini_gene.size()][size]);
+        return array;
     }
 
     public static int calcFitness(int gene[], int size){
@@ -58,8 +56,8 @@ public class NQueen {
         return fitness;
     }
 
-
-    public static int getCell(int board, Integer pos[], Integer ofst[], int size) {
+/*
+    public static int getCell(int board, int pos[], int ofst[], int size) {
         int posx;
         int posy;
         posx = pos[0] + ofst[0];
@@ -71,40 +69,45 @@ public class NQueen {
         }
         return val;
     }
+*/
 
 
     //順列表現と順序表現へ変換
-    public static int p_to_o(int gene, int size) {
-      	Board<Integer> board [] = new ArrayList<Integer>();
-        Converted<Integer> converted [] = new ArrayList<Integer>();
-        Num_list<Integer> num_list [] = new ArrayList<Integer>();
+    public static int [] p_to_o(int gene[], int size) {
+
+        ArrayList<Integer> converted = new ArrayList<Integer>();
+        ArrayList<Integer> num_list = new ArrayList<Integer>();
         //数値が1からサイズ分まで順番に入っているリストを作成
-        for(Integer num: size){
+        for(int num = 1; num <= size; num ++){
             num_list.add(num);
         }
 
         //遺伝子変換
-        for (Integer num: gene){
-            converted.add(num_list.index(num));
-            num_list.removeAll(num);
+        for (int i = 0; i < size; i ++){
+            converted.add(num_list.indexOf(gene[i]));
+            num_list.remove(gene[i]);
         }
-        return converted;
+
+        int [] array = converted.toArray(new int[size]);
+        return array;
     }
 
     //順序表現から順列表現へ変換
-    public static int o_to_p(int gene, int size){
-        Converted<Integer> converted [] = new ArrayList<Integer>();
-		Num_list<Integer> num_list [] = new ArrayList<Integer>();
+    public static int [] o_to_p(int gene[], int size){
+        ArrayList<Integer> converted = new ArrayList<Integer>();
+        ArrayList<Integer> num_list = new ArrayList<Integer>();
 
-        for(Integer num: size){
+        for(int num = 1; num <= size; num ++){
             num_list.add(num);
-		}
+        }
 
-        for(Integer num: gene){
-            converted.add(num_list.removeAll(num));
-		}
+        for (int i = 0; i < size; i ++){
+            converted.add(num_list.get(gene[i]));
+            num_list.remove(gene[i]);
+        }
 
-        return converted;
+        int [] array = converted.toArray(new int[size]);
+        return array;
 	}
 
     //交叉
@@ -113,7 +116,7 @@ public class NQueen {
 
         Random rand = new Random();
 
-        int len = (int)geneList.length/2;
+        int len = geneList.length/2;
         for (int i = 0; i < len; i ++){
 
             int n = i * 2;
@@ -146,7 +149,7 @@ public class NQueen {
     }
 
     //適応度を基準にソートし，淘汰と増殖を行う(Java)
-    public static int[][] geneSort(int geneList[][], int size) {
+    public static int[][] geneSort(int geneList[][], int size, int n) {
 
         int [][] fitGene = new int [geneList.length][size+1];
         int [][] sortList = new int [geneList.length][size];
@@ -165,9 +168,9 @@ public class NQueen {
         Arrays.sort(fitGene, (a, b) -> Integer.compare(a[geneList[0].length], b[geneList[0].length]));
 
         if(fitGene[0][size]==0){
-            System.out.println("終わり");
-            // boardの出力
-            // 時間の出力
+            System.out.println("count = " + n);
+            board_print(fitGene[0][0], size);
+            
             System.exit(0);
         }
 
@@ -200,10 +203,10 @@ public class NQueen {
         int n = 1;
         while (true){
             //遺伝子が評価され，淘汰され，増殖する
-            geneList = geneSort(geneList, size);
+            geneList = geneSort(geneList, size, n);
 
             //交叉する
-            int [] crossGene;
+            int [][] crossGene = new int[geneList.length][size];
 
             /*
             for gene in geneList:
@@ -217,7 +220,8 @@ public class NQueen {
             }
 
 
-            cross(crossGene, size);
+            
+            geneList = cross(crossGene, size);
 
 
 
