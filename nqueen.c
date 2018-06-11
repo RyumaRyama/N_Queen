@@ -19,9 +19,9 @@ void board_print(int* gene, int size);
 void calc_fitness(gene_struct* gene_list, int gene_num, int size);
 void make_ini_gene(gene_struct* gene_list, int gene_num, int size);
 void p_to_o(gene_struct* gene_list,int gene_num,int size);
-int index_num(list* num_list,int gene_el);
+int index_num(list** num_list,int gene_el);
 void o_to_p(gene_struct* gene_list,int gene_num,int size);
-int pop_num(list* num_list,int gene_el);
+int pop_num(list** num_list,int gene_el);
 void cross(gene_struct* gene_list,int gene_num, int size);
 void mutation(gene_struct* gene_list, int gene_num, int size);
 void gene_sort(gene_struct* gene_list, int gene_num, int size, int count);
@@ -49,28 +49,34 @@ int main(int argc, char const* argv[])
     gene_struct gene_list[gene_num];
     make_ini_gene(gene_list, gene_num, size);
     calc_fitness(gene_list, gene_num, size);
+    printf("初期集団の生成\n");
     for(int i=0; i<gene_num; i++){
         for(int j=0; j<size; j++){
             printf("%d ", gene_list[i].gene[j]);
         }
         printf("  : %d \n", *gene_list[i].fitness);
     }
-    gene_sort(gene_list, gene_num, size, 0);
-    printf("\n");
-    for(int i=0; i<gene_num; i++){
-        for(int j=0; j<size; j++){
-            printf("%d ", gene_list[i].gene[j]);
-        }
-        printf("  : %d \n", *gene_list[i].fitness);
-    }
+   
     
     //学習ループ
     n = 1;
-/*
+    
+    //ループに入る
     while(1){
+        //遺伝子が評価され，淘汰され，増殖する
+        gene_sort(gene_list, gene_num, size, n);
         
+        //交叉する
+        p_to_o(gene_list,gene_num,size);
+        cross(gene_list,gene_num, size);
+        o_to_p(gene_list,gene_num,size);
+        
+        //突然変異する
+        mutation(gene_list, gene_num, size);
+        
+        n++;
     }
-*/
+    
     for(int i=0; i<gene_num; i++){       //領域の開放
         free(gene_list[i].gene);
         free(gene_list[i].fitness);
@@ -134,95 +140,106 @@ void calc_fitness(gene_struct* gene_list, int gene_num, int size) {
 
 /* 順列表現と順序表現へ変更 */
 void p_to_o(gene_struct* gene_list,int gene_num,int size){
-    list* num_list = malloc(sizeof(list));
-    make_num_list(num_list,size);
+    list* num_list;
     
     //遺伝子変換
     for (int i = 0; i < gene_num; i++) {
+        num_list = malloc(sizeof(list));
+        make_num_list(num_list,size);
         for (int j = 0; j < size; j++) {
-             
-        }    
-        for (int j = 0; j < size; j++) {
-            gene_list[i].gene[j] = index_num(num_list,gene_list[i].gene[j]);
+            gene_list[i].gene[j] = index_num(&num_list,gene_list[i].gene[j]);
         }
     }
+   /* 
+    printf("\n順列表現と順序表現へ変更\n");
+    for(int i=0; i<gene_num; i++){
+        for(int j=0; j<size; j++){
+            printf("%d ", gene_list[i].gene[j]);
+        }
+        printf("  : %d \n", *gene_list[i].fitness);
+    */
 }
 
 /* 要素のindexを返す */
-int index_num(list* num_list,int gene_el) {
-    //一番目に要素がある場合
-    if (num_list->n == gene_el){ 
-        list* delete = num_list;
-        num_list = num_list->next;
-        free(delete);
-        return 0;
-    }
+int index_num(list** num_list, int gene_el) {
+    list* TOP = *num_list;       //先頭アドレスを保持
+    list* el_pre = NULL;        //参照している構造体の一つ前を指すポインタ変数
+    int cnt = 0;                //カウンタ
     
-    //それ以降
-    int cnt = 1;
-    list* next = num_list->next;
-    while (next->next != NULL) {
-        if (next->n == gene_el) {                            //見つけた場合，indexを返す
-            list* delete = num_list->next;
-            num_list->next = next->next;
-            free(delete);
-            return cnt;      
+    while(num_list != NULL){
+        if((*num_list)->n == gene_el){
+            if(el_pre == NULL)            //先頭に要素があった場合
+                TOP = (*num_list)->next;
+            else                            //それ以降に発見
+                el_pre->next = (*num_list)->next;
+            free(*num_list);
+            *num_list = TOP;
+            return cnt;
         }
-        cnt++;    
-        num_list = next;
-        next = next->next;
+        el_pre = *num_list;
+        *num_list = (*num_list)->next;
+        cnt++;
     }
-    return -1;                                               //見つからなかった場合，-1を返す
+    return -1;                  //見つからなかった場合，-1を返す
 }
 
 /* 順序表現から順列表現へ変換 */
 void o_to_p(gene_struct* gene_list,int gene_num,int size) {
-    list* num_list = malloc(sizeof(list));
-    make_num_list(num_list,size);
+    list* num_list;
     
     //遺伝子変換
     for (int i = 0; i < gene_num; i++) {
+        num_list = malloc(sizeof(list));
+        make_num_list(num_list,size);
         for (int j = 0; j < size; j++) {
-            gene_list[i].gene[j]  = pop_num(num_list,gene_list[i].gene[j]);
+            gene_list[i].gene[j]  = pop_num(&num_list,gene_list[i].gene[j]);
         }
     }
+   /* 
+    printf("\n順序表現から順列表現へ変更\n");
+    for(int i=0; i<gene_num; i++){
+        for(int j=0; j<size; j++){
+            printf("%d ", gene_list[i].gene[j]);
+        }
+        printf("  : %d \n", *gene_list[i].fitness);
+    }*/
 }
 
 /* 要素をPOPする*/
-int pop_num(list* num_list,int gene_el){
-    //一番目に要素がある場合
-    if (num_list->n == gene_el){ 
-        num_list = num_list->next;
-        return num_list -> n;
-    }
+int pop_num(list** num_list,int gene_el){
+    list* TOP = *num_list;       //先頭アドレスを保持
+    list* el_pre = NULL;        //参照している構造体の一つ前を指すポインタ変数
+    int cnt = 0;                //カウンタ
     
-    //それ以降
-    int cnt = 1;
-    list* next = num_list->next;
-    while (next->next != NULL) {
-        if (cnt == gene_el) {
-            num_list->next = next -> next;
-            return next -> n;
+    while(num_list != NULL){
+        if(cnt == gene_el){
+            if(el_pre == NULL)            //先頭に要素があった場合
+                TOP = (*num_list)->next;
+            else                            //それ以降に発見
+                el_pre->next = (*num_list)->next;
+            int num = (*num_list)->n;
+            free(*num_list);
+            *num_list = TOP;
+            return num;
         }
+        el_pre = *num_list;
+        *num_list = (*num_list)->next;
         cnt++;
-        num_list = next;
-        next = next->next;
     }
-    return -1;
+    return -1;                  //見つからなかった場合，-1を返す
 }
 
 
 //num_listを生成
 void make_num_list(list* num_list, int size){
-    list* look = num_list;
     for(int i=0; i<size; i++){
-        look->n = i;
+        num_list->n = i;
         if(i != size-1){
-            look->next = malloc(sizeof(list));
-            look = look->next;
+            num_list->next = malloc(sizeof(list));
+            num_list = num_list->next;
         }
         else
-            look->next = NULL;
+            num_list->next = NULL;
     }
 }
 
