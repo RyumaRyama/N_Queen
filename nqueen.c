@@ -152,7 +152,9 @@ void p_to_o(gene_struct* gene_list,int gene_num,int size){
 int index_num(list* num_list,int gene_el) {
     //一番目に要素がある場合
     if (num_list->n == gene_el){ 
+        list* delete = num_list;
         num_list = num_list->next;
+        free(delete);
         return 0;
     }
     
@@ -161,7 +163,9 @@ int index_num(list* num_list,int gene_el) {
     list* next = num_list->next;
     while (next->next != NULL) {
         if (next->n == gene_el) {                            //見つけた場合，indexを返す
+            list* delete = num_list->next;
             num_list->next = next->next;
+            free(delete);
             return cnt;      
         }
         cnt++;    
