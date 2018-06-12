@@ -5,17 +5,19 @@ import java.util.*;
 
 public class NQueen {
     //Boardを出力
-    public static void board_print(int gene, int size){
-        for (int i = 0; i < gene; i++){
+    public static void boardPrint(int gene[], int size, long start){
+        for (int i = 0; i < gene.length-1; i++){
             for (int j = 0; j < size; j++){
-                if (i == j){
+                if (gene[i] == j){
                     System.out.print("Q" + " ");
                 }else{
                     System.out.print("." + " ");
                 }
             }
             System.out.println(" ");
-         }
+        }
+        long end = System.currentTimeMillis();
+        System.out.println((end - start)  + "ms");
     }
 
 
@@ -30,7 +32,7 @@ public class NQueen {
             Collections.shuffle(line);
             ini_gene.add(line);
         }
-        //int [][] array = ini_gene.toArray(new int[ini_gene.size()][size]);
+
         int [][] array = new int[ini_gene.size()][size];
         for(int i = 0; i < ini_gene.size(); i ++){
             for (int j = 0; j < size; j ++){
@@ -62,38 +64,21 @@ public class NQueen {
         return fitness;
     }
 
-/*
-    public static int getCell(int board, int pos[], int ofst[], int size) {
-        int posx;
-        int posy;
-        posx = pos[0] + ofst[0];
-        posy = pos[1] + ofst[1];
-        if (posx >= 0 && posy >= 0 && posx < size && posy < size) {
-            val = board[posx][posy];
-        } else {
-            val = -1;
-        }
-        return val;
-    }
-*/
-
-
     //順列表現と順序表現へ変換
     public static int [] p_to_o(int gene[], int size) {
 
         ArrayList<Integer> converted = new ArrayList<Integer>();
         ArrayList<Integer> num_list = new ArrayList<Integer>();
         //数値が1からサイズ分まで順番に入っているリストを作成
-        for(int num = 1; num <= size; num ++){
+        for(int num = 0; num < size; num ++){
             num_list.add(num);
         }
 
         //遺伝子変換
         for (int i = 0; i < size; i ++){
             converted.add(num_list.indexOf(gene[i]));
-            num_list.remove(gene[i]);
+            num_list.remove(num_list.indexOf(gene[i]));
         }
-
 
         int [] array = new int[size];
         for (int i = 0; i < size; i++){
@@ -108,7 +93,7 @@ public class NQueen {
         ArrayList<Integer> converted = new ArrayList<Integer>();
         ArrayList<Integer> num_list = new ArrayList<Integer>();
 
-        for(int num = 1; num <= size; num ++){
+        for(int num = 0; num < size; num ++){
             num_list.add(num);
         }
 
@@ -164,7 +149,7 @@ public class NQueen {
     }
 
     //適応度を基準にソートし，淘汰と増殖を行う(Java)
-    public static int[][] geneSort(int geneList[][], int size, int n) {
+    public static int[][] geneSort(int geneList[][], int size, int n, long start) {
 
         int [][] fitGene = new int [geneList.length][size+1];
         int [][] sortList = new int [geneList.length][size];
@@ -184,8 +169,7 @@ public class NQueen {
 
         if(fitGene[0][size]==0){
             System.out.println("count = " + n);
-            board_print(fitGene[0][0], size);
-            
+            boardPrint(fitGene[0], size, start);
             System.exit(0);
         }
 
@@ -197,6 +181,7 @@ public class NQueen {
         }
 
         sortList[geneList.length-1] = sortList[0];
+        sortList[1] = sortList[0];
         return sortList;
 
     }
@@ -205,6 +190,8 @@ public class NQueen {
 
     //NQueen本体
     public static void main(String args[]) {
+        //時間の測定
+        long start = System.currentTimeMillis();
         //NxNのBoard，N個のQueen，のN
         int size = Integer.parseInt(args[0]);
 
@@ -218,37 +205,20 @@ public class NQueen {
         int n = 1;
         while (true){
             //遺伝子が評価され，淘汰され，増殖する
-            geneList = geneSort(geneList, size, n);
+            geneList = geneSort(geneList, size, n, start);
 
             //交叉する
             int [][] crossGene = new int[geneList.length][size];
 
-            /*
-            for gene in geneList:
-                crossGene.append(p_to_o(gene, size))
-            */
-
             for (int i = 0; i < geneList.length; i ++){
-
                 crossGene[i] = p_to_o(geneList[i], size);
-
             }
-
-
             
             geneList = cross(crossGene, size);
 
-
-
             for (int i = 0; i < geneList.length; i ++){
-
                 crossGene[i] = o_to_p(geneList[i], size);
-
             }
-            /*
-            for gene in cross_gene:
-                gene_list.append(o_to_p(gene, size));
-            */
 
             //突然変異する
             mutation(geneList, size);
