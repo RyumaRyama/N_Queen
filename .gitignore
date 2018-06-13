@@ -1,2 +1,5 @@
 /a.out
 *.txt
+*.class
+/Prime_opt
+/Presentation/
