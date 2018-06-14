@@ -8,21 +8,28 @@ fi
 gene=0;
 
 #コンパイル
-#clang $1
-#clang -o Prime_opt -O $1
-javac $1
+clang nqueen.c 
+clang -o Prime_opt -O nqueen.c 
+javac CrossGene.java Fitness.java Gene.java NQueen.java
 
 # 10 ~ gene 世代まで測定
-for i in `seq 1 3`
+for i in `seq 1 10`
 do 
-    for j in `seq 1 5` # 5回測定した平均
+    for j in `seq 1 10` # 10回測定した平均
     do  
         gene=`expr $i \* 10`
         
-        #(./a.out $gene) | grep "Time" | egrep -o '[0-9]+[\.]+[0-9]+[0-9]'>> c_$gene.txt
-        #(./Prime_opt $gene) | grep "Time" | egrep -o '[0-9]+[\.]+[0-9]+[0-9]'>> c_opt_$gene.txt
+        echo "n="$gene
+        (./a.out $gene) | grep "Time" | egrep -o '[0-9]+[\.]+[0-9]+[0-9]'>> c_$gene.txt
+        echo "c"
+        (./Prime_opt $gene) | grep "Time" | egrep -o '[0-9]+[\.]+[0-9]+[0-9]'>> c_opt_$gene.txt
+        echo "c_opt"
         (java NQueen $gene) | grep "Time" | egrep -o '[0-9]+[\.]+[0-9]+[0-9]'>> java_$gene.txt 
-        (python3 nqueen.py $gene) | grep "Time" | egrep -o '[0-9]+[\.]+[0-9]+[0-9]'>> py_$gene.txt
+        echo "java"
+        (python2 nqueen_py2.py $gene) | grep "Time" | egrep -o '[0-9]+[\.]+[0-9]+[0-9]'>> py2_$gene.txt
+        echo "python2"
+        (python3 nqueen.py $gene) | grep "Time" | egrep -o '[0-9]+[\.]+[0-9]+[0-9]'>> py3_$gene.txt
+        echo "python3"
         
     done
 done
@@ -31,20 +38,25 @@ done
 gene=0
 
 #平均を求める
-for i in `seq 1 3` #世代
+for i in `seq 1 10` #世代
 do
     gene=`expr $i \* 10`
     
-    #/bin/echo -n $gene" " >> c.txt
-    #cat c_$gene.txt | awk '{x++;sum+=$1}END {print sum/x}' >> c_ave.txt
+    /bin/echo -n $gene" " >> c_ave.txt
+    cat c_$gene.txt | awk '{x++;sum+=$1}END {print sum/x}' >> c_ave.txt
     
-    #/bin/echo -n $gene" " >> c_opt_ave.txt
-    #cat c_opt_$gene.txt | awk '{x++;sum+=$1}END {print sum/x}' >> c_opt_ave.txt
+    /bin/echo -n $gene" " >> c_opt_ave.txt
+    cat c_opt_$gene.txt | awk '{x++;sum+=$1}END {print sum/x}' >> c_opt_ave.txt
     
     /bin/echo -n $gene" " >> java_ave.txt
     cat java_$gene.txt | awk '{x++;sum+=$1}END {print sum/x}' >> java_ave.txt
     
-    /bin/echo -n $gene" " >> py_ave.txt
-    cat py_$gene.txt | awk '{x++;sum+=$1}END {print sum/x}' >> py_ave.txt
+    #/bin/echo -n $gene" " >> py2_ave.txt
+    #cat py2_$gene.txt | awk '{x++;sum+=$1}END {print sum/x}' >> py2_ave.txt
+    
+    /bin/echo -n $gene" " >> py3_ave.txt
+    cat py3_$gene.txt | awk '{x++;sum+=$1}END {print sum/x}' >> py3_ave.txt
 done
 
+#グラフ出力
+gnuplot nqueen.plt

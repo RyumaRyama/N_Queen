@@ -82,10 +82,6 @@ int main(int argc, char const* argv[])
         n++;
     }
     
-    for(int i=0; i<gene_num; i++){       //領域の開放
-        free(gene_list[i].gene);
-        free(gene_list[i].fitness);
-    }
     return 0;
 }
 
@@ -310,6 +306,12 @@ void gene_sort(gene_struct* gene_list, int gene_num, int size, int count){
         printf("count : %d\n", count);
         board_print(gene_list[0].gene, size);
         printf("Time = %f\n", (double)(end-start)/(double)(1000000));
+        
+        for(int i=0; i<gene_num; i++){       //領域の開放
+            free(gene_list[i].gene);
+            free(gene_list[i].fitness);
+        }
+        
         exit(0);
     }
     
