@@ -13,7 +13,7 @@ public class NQueen {
         int size = Integer.parseInt(args[0]);
 
         //１世代あたりの遺伝子の数
-        int geneNum = 4;
+        int geneNum = 10;
 
         MakeIniGene make = new MakeIniGene(geneNum, size);
 
@@ -168,11 +168,12 @@ class Fitness {
                     sortList[i][j] = addGene[j];
                 }
         }
-        sortList[geneList.length-1] = sortList[0];
-        sortList[1] = sortList[0];
+        int [] tmp = sortList[0].clone();
+        sortList[geneList.length-1] = tmp;
+        sortList[1] = tmp;
+
         return sortList;
     }
-
 }
 
 class CrossGene {
@@ -232,7 +233,7 @@ class CrossGene {
         int len = geneList.length/2;
         for (int i = 0; i < len; i ++){
             int n = i * 2;
-            int num = rand.nextInt(size -2) + 1;
+            int num = rand.nextInt(size - 1) + 1;
             int [] tmpList = geneList[n].clone();
 
             for(int j = num; j < size; j ++){
@@ -247,8 +248,8 @@ class CrossGene {
         Random rand = new Random();
 
         int gene = rand.nextInt(geneList.length);
-        int num1 = rand.nextInt(size - 1);
-        int num2 = rand.nextInt(size - 1);
+        int num1 = rand.nextInt(size);
+        int num2 = rand.nextInt(size);
 
         int tmp = geneList[gene][num1];
         geneList[gene][num1] = geneList[gene][num2];
