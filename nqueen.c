@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+clock_t start;
+
 /* 構造体宣言 */
 //遺伝子
 typedef struct {
@@ -30,6 +32,8 @@ void make_num_list(list* num_list, int size);
 /* NQueen本体 */
 int main(int argc, char const* argv[])
 {
+    start = clock();
+
     if(argc <= 1){
         puts("Use '[FILE NAME] [QUEEN NUM]'.");
         return 1;
@@ -49,6 +53,7 @@ int main(int argc, char const* argv[])
     gene_struct gene_list[gene_num];
     make_ini_gene(gene_list, gene_num, size);
     calc_fitness(gene_list, gene_num, size);
+    /*
     printf("初期集団の生成\n");
     for(int i=0; i<gene_num; i++){
         for(int j=0; j<size; j++){
@@ -56,7 +61,7 @@ int main(int argc, char const* argv[])
         }
         printf("  : %d \n", *gene_list[i].fitness);
     }
-   
+   */
     
     //学習ループ
     n = 1;
@@ -257,9 +262,7 @@ void cross(gene_struct* gene_list, int gene_num,  int size) {
                 tmp[j] = gene_list[n].gene[j];
             else
                 tmp[j] = gene_list[n+1].gene[j];
-        }
-        
-        for(int j=0; j<size; j++){                  //n+1,nの配列を作成
+        } for(int j=0; j<size; j++){                  //n+1,nの配列を作成
             if(j >= num)
                 gene_list[n+1].gene[j] = gene_list[n].gene[j];
         }
@@ -299,12 +302,14 @@ void gene_sort(gene_struct* gene_list, int gene_num, int size, int count){
     }
     
     //最も良い適応度を出力
-    printf("%d\n", *gene_list[0].fitness);
+    //printf("%d\n", *gene_list[0].fitness);
     
     //適応度が0ならプログラムを終了させる
     if(*gene_list[0].fitness == 0){
+        clock_t end = clock();
         printf("count : %d\n", count);
         board_print(gene_list[0].gene, size);
+        printf("Time = %f\n", (double)(end-start)/(double)(1000000));
         exit(0);
     }
     
