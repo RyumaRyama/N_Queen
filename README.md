@@ -86,13 +86,15 @@ python2 nqueen_py2.py N
 python3 nqueen.py N
 ```
 
-### clang
+### C
 
+C
 ```
 clang nqueen.c
 ./a.out N
 ```
 
+C (最適化)
 ```
 clang -o a.opt -O nqueen.c
 ./a.out N
