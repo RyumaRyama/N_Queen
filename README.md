@@ -88,13 +88,13 @@ python3 nqueen.py N
 
 ### C
 
-C
 ```
 clang nqueen.c
 ./a.out N
 ```
 
-C (最適化)
+### C (最適化)
+
 ```
 clang -o a.opt -O nqueen.c
 ./a.out N
