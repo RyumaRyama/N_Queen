@@ -8,9 +8,9 @@
 gene=0;
 
 #コンパイル
-#clang nqueen.c 
-#clang -o a.opt -O nqueen.c 
-#javac CrossGene.java Fitness.java Gene.java NQueen.java
+clang nqueen.c 
+clang -o a.opt -O nqueen.c 
+javac CrossGene.java Fitness.java Gene.java NQueen.java
 
 # 10 ~ gene 世代まで測定
 for i in `seq 1 10`
@@ -19,7 +19,6 @@ do
     do  
         gene=`expr $i \* 10`
         
-<< COMMENTOUT 
         echo "n="$gene
         (./a.out $gene) | grep "Time" | egrep -o '[0-9]+[\.]+[0-9]+[0-9]'>> c_$gene.txt
         echo "c"
@@ -27,7 +26,6 @@ do
         echo "c_opt"
         (java NQueen $gene) | grep "Time" | egrep -o '[0-9]+[\.]+[0-9]+[0-9]'>> java_$gene.txt 
         echo "java"
-COMMENTOUT
         
         (python2 nqueen_py2.py $gene) | grep "Time" | egrep -o '[0-9]+[\.]+[0-9]+[0-9]'>> py2_$gene.txt
         echo "python2"
@@ -45,7 +43,6 @@ for i in `seq 1 10` #世代
 do
     gene=`expr $i \* 10`
    
-<< COMMENTOUT 
     /bin/echo -n $gene" " >> c_ave.txt
     cat c_$gene.txt | awk '{x++;sum+=$1}END {print sum/x}' >> c_ave.txt
     
@@ -54,7 +51,6 @@ do
     
     /bin/echo -n $gene" " >> java_ave.txt
     cat java_$gene.txt | awk '{x++;sum+=$1}END {print sum/x}' >> java_ave.txt
-COMMENTOUT
     
     /bin/echo -n $gene" " >> py2_ave.txt
     cat py2_$gene.txt | awk '{x++;sum+=$1}END {print sum/x}' >> py2_ave.txt

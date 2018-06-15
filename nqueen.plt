@@ -1,6 +1,6 @@
 set terminal svg
 set ylabel 'time(sec)'
-set xlabel 'gene'
+set xlabel 'N'
 set title 'ExecutionSpeed'
 set output "output_java_c.svg"
 plot "java_ave.txt" with lp,"c_ave.txt" with lp,"c_opt_ave.txt" with lp
