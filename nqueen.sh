@@ -9,7 +9,7 @@ gene=0;
 
 #コンパイル
 clang nqueen.c 
-clang -o Prime_opt -O nqueen.c 
+clang -o a.opt -O nqueen.c 
 javac CrossGene.java Fitness.java Gene.java NQueen.java
 
 # 10 ~ gene 世代まで測定
@@ -22,14 +22,14 @@ do
         echo "n="$gene
         (./a.out $gene) | grep "Time" | egrep -o '[0-9]+[\.]+[0-9]+[0-9]'>> c_$gene.txt
         echo "c"
-        (./Prime_opt $gene) | grep "Time" | egrep -o '[0-9]+[\.]+[0-9]+[0-9]'>> c_opt_$gene.txt
+        (./a.opt $gene) | grep "Time" | egrep -o '[0-9]+[\.]+[0-9]+[0-9]'>> c_opt_$gene.txt
         echo "c_opt"
         (java NQueen $gene) | grep "Time" | egrep -o '[0-9]+[\.]+[0-9]+[0-9]'>> java_$gene.txt 
         echo "java"
-        (python2 nqueen_py2.py $gene) | grep "Time" | egrep -o '[0-9]+[\.]+[0-9]+[0-9]'>> py2_$gene.txt
-        echo "python2"
-        (python3 nqueen.py $gene) | grep "Time" | egrep -o '[0-9]+[\.]+[0-9]+[0-9]'>> py3_$gene.txt
-        echo "python3"
+        #(python2 nqueen_py2.py $gene) | grep "Time" | egrep -o '[0-9]+[\.]+[0-9]+[0-9]'>> py2_$gene.txt
+        #echo "python2"
+        #(python3 nqueen.py $gene) | grep "Time" | egrep -o '[0-9]+[\.]+[0-9]+[0-9]'>> py3_$gene.txt
+        #echo "python3"
         
     done
 done
@@ -54,8 +54,8 @@ do
     #/bin/echo -n $gene" " >> py2_ave.txt
     #cat py2_$gene.txt | awk '{x++;sum+=$1}END {print sum/x}' >> py2_ave.txt
     
-    /bin/echo -n $gene" " >> py3_ave.txt
-    cat py3_$gene.txt | awk '{x++;sum+=$1}END {print sum/x}' >> py3_ave.txt
+    #/bin/echo -n $gene" " >> py3_ave.txt
+    #cat py3_$gene.txt | awk '{x++;sum+=$1}END {print sum/x}' >> py3_ave.txt
 done
 
 #グラフ出力
