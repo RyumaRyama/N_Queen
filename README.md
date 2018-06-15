@@ -21,11 +21,11 @@ GAを用いてNQuenn問題を解いてみる
 
 - MacBook HighSierra
 
-  MacBook Pro (Retina, 13-inch, Early 2015)
+  - MacBook Pro (Retina, 13-inch, Early 2015)
 
-  プロセッサ　2.7GHz Intel Core i5
+  - プロセッサ　2.7GHz Intel Core i5
   
-  メモリ　8GB 1867MHz DDR3
+  - メモリ　8GB 1867MHz DDR3
 
 - python2
 - python3
