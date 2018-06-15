@@ -105,6 +105,15 @@ javac NQueen.java Gene.java Fitness.java CrossGene.java
 java NQueen N
 ```
 
+## 言語別処理速度測定
+
+nqueen.shを実行すると，それぞれの言語の処理速度がグラフ化される
+
+```
+sh nqueen.sh
+```
+
+
 ##  実行結果
 
 Nの数を10~100の10刻みで10回ずつ測定し，平均処理速度の移り変わりをsvgファイルに示した
