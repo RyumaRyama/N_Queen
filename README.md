@@ -97,7 +97,7 @@ clang nqueen.c
 
 ```
 clang -o a.opt -O nqueen.c
-./a.out N
+./a.opt N
 ```
 
 ### Java
