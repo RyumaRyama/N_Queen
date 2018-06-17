@@ -124,11 +124,17 @@ Nの数を10~100の10刻みで10回ずつ測定し，平均処理速度の移り
 - output.svg
   - 全ての実行環境
   
+  ![output.svg](https://github.com/RyumaRyama/N_Queen/blob/develop/output.svg)
+  
 - output_java_c.svg
   - java, c, c(最適化)
   
+  ![output_java_c.svg](https://github.com/RyumaRyama/N_Queen/blob/develop/output.svg)
+
 - output_py.svg
   - python2, python3
+
+  ![output_py.svg](https://github.com/RyumaRyama/N_Queen/blob/develop/output.svg)
 
 ## 実行結果からわかったこと
 - Cの最適化とJavaが最も高速
