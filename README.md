@@ -1,4 +1,8 @@
 # GAで解くNQueen問題
+<<<<<<< HEAD
+=======
+簡単な説明，結果を[nqueen.pdf](https://github.com/RyumaRyama/N_Queen/blob/develop/nqueen.pdf)にまとめた
+>>>>>>> develop
 
 ## GA(遺伝的アルゴリズム)とは
 >遺伝的アルゴリズムはデータ（解の候補）を遺伝子で表現した「個体」を複数用意し、適応度の高い個体を優先的に選択して交叉（組み換え）・突然変異などの操作を繰り返しながら解を探索する。適応度は適応度関数によって与えられる。
@@ -14,7 +18,11 @@ N*NのマスにN個のクイーンを置くときにお互いに取ることが�
 
 GAを用いてNQuenn問題を解いてみる
 
+<<<<<<< HEAD
 ついでに環境別で実行速度に違いが出るか測定してみちゃう
+=======
+ついでに言語別で実行速度に違いが出るか測定してみちゃう
+>>>>>>> develop
 
 
 ## 実行環境
@@ -24,12 +32,20 @@ GAを用いてNQuenn問題を解いてみる
   - MacBook Pro (Retina, 13-inch, Early 2015)
 
   - プロセッサ　2.7GHz Intel Core i5
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> develop
   - メモリ　8GB 1867MHz DDR3
 
 - python2
 - python3
+<<<<<<< HEAD
 - clang
+=======
+- clang-902
+>>>>>>> develop
 - Java9
 
 
@@ -39,7 +55,11 @@ GAを用いてNQuenn問題を解いてみる
 
 　　一次元配列で行列を表現
 
+<<<<<<< HEAD
 　　例　　[1, 3, 0, 2]
+=======
+　　例:　　[1, 3, 0, 2]
+>>>>>>> develop
 
 2. 初期遺伝子集団生成
 
@@ -59,7 +79,11 @@ GAを用いてNQuenn問題を解いてみる
 
 　　順序表現の遺伝子同士を一点交叉　(配列内に同じ値ができる可能性を防ぐ)
 
+<<<<<<< HEAD
 　　例
+=======
+　　例:
+>>>>>>> develop
   
 ```
 　　[3, 1, 2, 0] -> [3, 1, | 1, 0 |] -> [3, 1, 0, 0]
@@ -109,12 +133,27 @@ java NQueen N
 
 ## 言語別処理速度測定
 
+<<<<<<< HEAD
 nqueen.shを実行すると，それぞれの言語の処理速度がグラフ化される
+=======
+nqueen.shを実行すると，N=100までのそれぞれの言語の処理速度がグラフ化される
+>>>>>>> develop
 
 ```
 sh nqueen.sh
 ```
 
+<<<<<<< HEAD
+=======
+nqueen_java_c.shを実行すると，N=300までのCとC(最適化),Javaの処理速度がグラフ化される
+
+```
+sh nqueen_java_c.sh
+```
+
+*※いぞれもかなり計測時間がかかるので注意。当実行環境では10時間以上かかった*
+
+>>>>>>> develop
 
 ##  実行結果
 
@@ -123,6 +162,7 @@ Nの数を10~100の10刻みで10回ずつ測定し，平均処理速度の移り
 - output.svg
   - 全ての実行環境
   
+<<<<<<< HEAD
 - output_java_c.svg
   - java, c, c(最適化)
   
@@ -136,6 +176,36 @@ Nの数を10~100の10刻みで10回ずつ測定し，平均処理速度の移り
 - Python系は比較的低速
   - 2系と3系に大きな速度変化はなし
 - 50世代より明確な速度差が現れる
+=======
+  ![output.svg](https://github.com/RyumaRyama/N_Queen/blob/develop/output.svg)
+  
+- output_java_c.svg
+  - java, c, c(最適化)
+  
+  ![output_java_c.svg](https://github.com/RyumaRyama/N_Queen/blob/develop/output_java_c.svg)
+
+- output_py.svg
+  - python2, python3
+
+  ![output_py.svg](https://github.com/RyumaRyama/N_Queen/blob/develop/output_py.svg)
+  
+___
+
+Nの数を10~300の10刻みで10回ずつ測定し，平均処理速度の移り変わりをsvgファイルに示した
+
+- output_java_c_300.svg
+  - java, c, c(最適化)
+  
+  ![output_java_c_300.svg](https://github.com/RyumaRyama/N_Queen/blob/develop/output_java_c_300.svg)
+
+## 実行結果からわかったこと
+- Cの最適化とJavaが最も高速
+- 最適化での差は大きい
+- Nの増加量に対して，大きな速度変化はなし(おそらくn log n)
+- Python系は比較的低速
+  - 2系と3系に大きな速度変化はなし
+- 膨大なデータ量なら高速なC・Javaを，小規模ならコード量の少ないPython系を用いたい
+>>>>>>> develop
 
 ## 感想
 Cとじゃゔぁしゅごぃぃぃぃぃぃ(一同)
@@ -146,6 +216,7 @@ Cとじゃゔぁしゅごぃぃぃぃぃぃ(一同)
 
 
 
+<<<<<<< HEAD
 
 
 
@@ -163,3 +234,5 @@ Cとじゃゔぁしゅごぃぃぃぃぃぃ(一同)
 
 
 
+=======
+>>>>>>> develop
