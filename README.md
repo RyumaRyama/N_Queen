@@ -30,7 +30,7 @@ GAを用いてNQuenn問題を解いてみる
 
 - python2
 - python3
-- clang
+- clang-902
 - Java9
 
 
