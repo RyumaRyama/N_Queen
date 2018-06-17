@@ -105,11 +105,6 @@ def gene_sort(gene_list, size, count):
     fit_gene.sort(key=itemgetter(1))
 
     print fit_gene[0][1]
-    '''
-    for i in range(len(gene_list)):
-        print(fit_gene[i][0])
-    print("")
-    '''
     
     if fit_gene[0][1] == 0:
         print "count {}".format(count)
