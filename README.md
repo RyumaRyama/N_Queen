@@ -32,7 +32,7 @@ GAを用いてNQuenn問題を解いてみる
 - python3
 - clang-902
 - Java9
-- gnuplot ver5.2
+- gnuplot ver.5.2
 
 
 ## コーディング案
